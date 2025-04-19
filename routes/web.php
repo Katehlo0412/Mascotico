@@ -13,5 +13,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
+// ruta para la vista de inicio: ejemplo
+Route::get('/inicio', function () {
+    return Inertia::render('home');
+})->name('inicio');
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
