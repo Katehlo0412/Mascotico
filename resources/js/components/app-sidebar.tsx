@@ -13,6 +13,11 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Home',
+        href: '/inicio',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -34,6 +39,10 @@ export function AppSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
+                        {/*
+                        Este code nos lleva al dashboard pero aparece en el sidebard como "Laravel Started Kit"
+                         */}
+
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/dashboard" prefetch>
                                 <AppLogo />
