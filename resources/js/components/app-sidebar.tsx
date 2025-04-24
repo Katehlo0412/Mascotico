@@ -18,7 +18,13 @@ const mainNavItems: NavItem[] = [
         href: '/inicio',
         icon: LayoutGrid,
     },
+    {
+        title: 'Servicios',
+        href: '/inicio',
+        icon: LayoutGrid,
+    },
 ];
+
 
 const footerNavItems: NavItem[] = [
     {
@@ -32,6 +38,7 @@ const footerNavItems: NavItem[] = [
         icon: BookOpen,
     },
 ];
+
 
 export function AppSidebar() {
     return (
@@ -55,11 +62,11 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={mainNavItems} />
             </SidebarContent>
-
             <SidebarFooter>
                 <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
+
         </Sidebar>
     );
 }
