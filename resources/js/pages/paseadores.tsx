@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 
-interface Veterinario {
+interface Paseador {
     title?: string;
     address?: string;
     rating?: number | string;
@@ -11,23 +11,23 @@ interface Veterinario {
 }
 
 interface Props {
-    resultados?: Veterinario[];
+    resultados?: Paseador[];
     error?: string;
     ubicacion?: string;
 }
 
-const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
+const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
     const [search, setSearch] = useState(ubicacion);
 
     const handleBuscar = (e: React.FormEvent) => {
         e.preventDefault();
-        Inertia.get('/veterinarios', { ubicacion: search });
+        Inertia.get('/paseadores', { ubicacion: search });
         setSearch('');
     };
 
     return (
         <div>
-            <h1>Veterinarios</h1>
+            <h1>Paseadores de Perros</h1>
 
             {/* Mostrar mensajes de error */}
             {error && (
@@ -71,17 +71,17 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
             {ubicacion && resultados.length > 0 ? (
                 <div>
                     <h2>Resultados de búsqueda:</h2>
-                    {resultados.map((veterinario, index) => (
+                    {resultados.map((paseador, index) => (
                         <div key={index}>
-                            <h3>{veterinario.title || 'Sin nombre'}</h3>
-                            <p><strong>Dirección:</strong> {veterinario.address || 'Sin dirección'}</p>
-                            <p><strong>Valoración:</strong> {veterinario.rating || 'N/A'}</p>
-                            <p><strong>Teléfono:</strong> {veterinario.phone || 'No disponible'}</p>
-                            <p><strong>Horario:</strong> {veterinario.hours || 'No disponible'}</p>
-                            {veterinario.link && (
+                            <h3>{paseador.title || 'Sin nombre'}</h3>
+                            <p><strong>Dirección:</strong> {paseador.address || 'Sin dirección'}</p>
+                            <p><strong>Valoración:</strong> {paseador.rating || 'N/A'}</p>
+                            <p><strong>Teléfono:</strong> {paseador.phone || 'No disponible'}</p>
+                            <p><strong>Horario:</strong> {paseador.hours || 'No disponible'}</p>
+                            {paseador.link && (
                                 <p>
                                     <a
-                                        href={veterinario.link}
+                                        href={paseador.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         style={{ color: '#007BFF', textDecoration: 'underline' }}
@@ -94,12 +94,12 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                     ))}
                 </div>
             ) : ubicacion ? (
-                <p>No se encontraron veterinarios cerca de la ubicación ingresada.</p>
+                <p>No se encontraron paseadores de perros cerca de la ubicación ingresada.</p>
             ) : (
-                <p>Por favor, ingresa una ubicación para buscar veterinarios.</p>
+                <p>Por favor, ingresa una ubicación para buscar paseadores de perros.</p>
             )}
         </div>
     );
 };
 
-export default Veterinarios;
+export default Paseadores;
