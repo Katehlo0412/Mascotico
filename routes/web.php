@@ -5,7 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\VeterinarioController;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('home');
 })->name('home');
 
 Route::get('/veterinarios', [VeterinarioController::class, 'index'])->name('veterinarios');

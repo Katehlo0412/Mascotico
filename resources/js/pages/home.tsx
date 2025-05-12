@@ -32,7 +32,7 @@ export default function Home() {
         <div className="flex justify-center mb-8">
           <input
             type="text"
-            placeholder="🔍 Buscar..."
+            placeholder="Ingresa una ciudad o ubicación"
             className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-full shadow-sm"
           />
         </div>
@@ -44,7 +44,7 @@ export default function Home() {
           </a>
           <a href="comida.html" className="flex flex-col items-center">
             <div className="bg-yellow-300 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2">🍲</div>
-            Comida
+            Tienda
           </a>
           <a href="adopciones.html" className="flex flex-col items-center">
             <div className="bg-pink-200 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2">💙</div>
