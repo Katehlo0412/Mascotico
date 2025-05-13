@@ -4,6 +4,12 @@ import { BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 
 interface Veterinario {
+    title?: string;
+    address?: string;
+    rating?: number | string;
+    phone?: string;
+    hours?: string;
+    link?: string;
   nombre: string;
   direccion: string;
   telefono: string;
@@ -55,6 +61,36 @@ const Veterinarios = ({ resultados = [], error, ubicacion = '' }: Props) => {
         </div>
       </form>
 
+            {/* Resultados */}
+            {ubicacion && resultados.length > 0 ? (
+                <div>
+                    <h2>Resultados de búsqueda:</h2>
+                    {resultados.map((veterinario, index) => (
+                        <div key={index}>
+                            <h3>{veterinario.title || 'Sin nombre'}</h3>
+                            <p><strong>Dirección:</strong> {veterinario.address || 'Sin dirección'}</p>
+                            <p><strong>Valoración:</strong> {veterinario.rating || 'N/A'}</p>
+                            <p><strong>Teléfono:</strong> {veterinario.phone || 'No disponible'}</p>
+                            <p><strong>Horario:</strong> {veterinario.hours || 'No disponible'}</p>
+                            {veterinario.link && (
+                                <p>
+                                    <a
+                                        href={veterinario.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{ color: '#007BFF', textDecoration: 'underline' }}
+                                    >
+                                        Ver más detalles
+                                    </a>
+                                </p>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            ) : ubicacion ? (
+                <p>No se encontraron veterinarios cerca de la ubicación ingresada.</p>
+            ) : (
+                <p>Por favor, ingresa una ubicación para buscar veterinarios.</p>
       {error && (
         <div className="max-w-xl mx-auto bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
           {error}
