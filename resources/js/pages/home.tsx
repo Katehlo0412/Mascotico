@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Inicio',
-    href: '/inicio',
-  },
-];
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -18,60 +9,93 @@ export default function Home() {
       setShowModal(false);
     }
   };
-  
+
   return (
-    <AppLayout breadcrumbs={breadcrumbs}>
-        
+    <>
       <Head title="Inicio | PetSearch" />
 
-      <main className="p-6 max-w-5xl mx-auto">
-        <h1 className="text-3xl font-semibold text-center mb-6">
-          ¿Qué estás buscando hoy?
-        </h1>
+      <main
+        className="min-h-screen w-full bg-no-repeat bg-cover bg-center flex flex-col justify-between p-6"
+        style={{ backgroundImage: "url('/images/homeBackground8.svg')" }}
+      >
+        {/* Búsqueda */}
+        <section className="flex flex-col items-center text-center gap-4 mt-30">
+          <h1 className="text-4xl font-bold text-[#DAA520] drop-shadow-md">
+            ¿Qué estás buscando hoy?
+          </h1>
 
-        <div className="flex justify-center mb-8">
-          <input
-            type="text"
-            placeholder="Ingresa una ciudad o ubicación"
-            className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-full shadow-sm"
-          />
-        </div>
+          <div className="relative w-full max-w-[90%] sm:max-w-lg md:max-w-xl lg:max-w-2xl mt-12">
+            <input
+              type="text"
+              placeholder="Buscar producto o marca"
+              className="w-full px-5 py-3 pr-10 border-2 border-[#DAA520] rounded-full text-[#DAA520] placeholder-[#DAA520] focus:outline-none bg-white"
+            />
+            <svg
+              className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2 text-[#DAA520]"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-4.35-4.35M16.65 16.65A7 7 0 1010 17a7 7 0 006.65-6.65z"
+              />
+            </svg>
+          </div>
+        </section>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-10">
-          <a href="veterinarios.html" className="flex flex-col items-center">
+        {/* Categorías */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mt-12 mb-10">
+          <a href="/veterinarios" className="flex flex-col items-center">
             <div className="bg-pink-200 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2">➕</div>
-            Veterinarios
+            Veterinarias
           </a>
-          <a href="comida.html" className="flex flex-col items-center">
-            <div className="bg-yellow-300 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2">🍲</div>
-            Tienda
+          <a href="/peluquerias" className="flex flex-col items-center">
+            <div className="bg-yellow-300 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2"></div>
+            Peluquerías
           </a>
-          <a href="adopciones.html" className="flex flex-col items-center">
-            <div className="bg-pink-200 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2">💙</div>
-            Adopciones
+          <a href="/entrenamientos" className="flex flex-col items-center">
+            <div className="bg-pink-200 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2"></div>
+            Entrenamientos
           </a>
-          <a href="consejos.html" className="flex flex-col items-center">
-            <div className="bg-yellow-300 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2">🌳</div>
-            Consejos
+          <a href="/guarderias" className="flex flex-col items-center">
+            <div className="bg-yellow-300 text-2xl w-16 h-16 flex items-center justify-center rounded-full mb-2"></div>
+            Guarderías
           </a>
-        </div>
+        </section>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-10">
+        {/* Recursos */}
+        <section className="grid md:grid-cols-3 gap-8 mb-10">
           <div className="bg-white p-4 shadow-md rounded-xl text-center">
             <img src="https://img.icons8.com/emoji/48/dog-face.png" alt="veterinario" className="mx-auto mb-2" />
-            <p><a href="veterinarios.html" className="text-blue-600 hover:underline">Encuentra un veterinario cercano</a></p>
+            <p>
+              <a href="veterinarios.html" className="text-blue-600 hover:underline">
+                Encuentra los mejores consejos para tu mascota
+              </a>
+            </p>
           </div>
           <div className="bg-white p-4 shadow-md rounded-xl text-center">
             <img src="https://img.icons8.com/ios-filled/50/speech-bubble.png" alt="comunidad" className="mx-auto mb-2" />
-            <p><a href="comunidad.html" className="text-blue-600 hover:underline">Publica una pregunta en la comunidad</a></p>
+            <p>
+              <a href="comunidad.html" className="text-blue-600 hover:underline">
+                ¡Busca y contacta a tu equipo de rescate animal local!
+              </a>
+            </p>
           </div>
           <div className="bg-white p-4 shadow-md rounded-xl text-center">
             <img src="https://img.icons8.com/emoji/48/cat-face.png" alt="adopta" className="mx-auto mb-2" />
-            <p><a href="adopciones.html" className="text-blue-600 hover:underline">Adopta una mascota</a></p>
+            <p>
+              <a href="/adopciones" className="text-blue-600 hover:underline">
+                Adopta una mascota
+              </a>
+            </p>
           </div>
-        </div>
+        </section>
       </main>
 
+      {/* Modal de Login */}
       {showModal && (
         <div
           id="loginModal"
@@ -109,6 +133,6 @@ export default function Home() {
           </div>
         </div>
       )}
-    </AppLayout>
+    </>
   );
 }

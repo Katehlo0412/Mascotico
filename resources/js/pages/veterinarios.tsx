@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
+import { BreadcrumbItem } from '@/types';
+import AppLayout from '@/layouts/app-layout';
 
 interface Veterinario {
     title?: string;
@@ -16,6 +18,14 @@ interface Props {
     ubicacion?: string;
 }
 
+
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'Veterinarios',
+    href: '/veterinarios',
+  },
+];
+
 const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
     const [search, setSearch] = useState(ubicacion);
 
@@ -26,6 +36,7 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
     };
 
     return (
+        <AppLayout breadcrumbs={breadcrumbs}>
         <div>
             <h1>Veterinarios</h1>
 
@@ -99,6 +110,7 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                 <p>Por favor, ingresa una ubicación para buscar veterinarios.</p>
             )}
         </div>
+        </AppLayout>
     );
 };
 
