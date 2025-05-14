@@ -28,6 +28,10 @@ Route::get('/entrenamientos', [EntrenamientoController::class, 'index'])->name('
 
 Route::get('/rescate', [RescateController::class, 'index'])->name('rescate.index');
 
+Route::get('/adopciones', function () {
+    return Inertia::render('adopciones');
+})->name('adopciones');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');

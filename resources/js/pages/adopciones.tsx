@@ -1,0 +1,202 @@
+import React, { useEffect, useState } from 'react';
+import {
+  Search,
+  ShoppingBag,
+  User,
+  PawPrint,
+} from 'lucide-react';
+import BotonEstado from '@/components/status-button';
+
+export default function AdopcionPage() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div className="font-sans text-gray-800 bg-white">
+      {/* Navbar */}
+      <header
+        className={`sticky top-0 z-50 transition-all duration-300 ${
+          scrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        }`}
+      >
+        <div className="flex items-center justify-between px-6 py-4">
+          {/* Logo */}
+          <div className={`flex items-center text-xl font-bold transition-colors ${
+            scrolled ? 'text-yellow-700' : 'text-yellow-700'
+          }`}>
+            <PawPrint className="w-6 h-6 mr-2" />
+            Animalico
+          </div>
+
+          {/* Search bar */}
+          <div className="flex-1 mx-25">
+            <div className={`flex items-center border rounded-full px-4 py-2 transition-colors duration-300 ${
+              scrolled ? 'border-yellow-700' : 'border-yellow-700'
+            }`}>
+              <input
+                type="text"
+                placeholder="Buscar producto o marca"
+                className={`bg-transparent outline-none w-full placeholder:text-sm placeholder:tracking-wide transition-colors duration-300 ${
+                  scrolled
+                    ? 'text-yellow-700 placeholder-yellow-700'
+                    : 'text-yellow-700 placeholder-yellow-700'
+                }`}
+              />
+              <Search
+                size={16}
+                className={`ml-2 transition-colors duration-300 ${
+                  scrolled ? 'text-yellow-700' : 'text-yellow-700'
+                }`}
+              />
+            </div>
+          </div>
+
+          {/* User actions */}
+          <nav className="flex items-center space-x-6">
+            <div className={`flex flex-col items-center transition-colors duration-300 ${
+              scrolled ? 'text-yellow-700' : 'text-yellow-700'
+            }`}>
+              <ShoppingBag className="w-5 h-5 mb-1" />
+              <p className="text-xs">Cesta</p>
+            </div>
+            <div className={`flex flex-col items-center transition-colors duration-300 ${
+              scrolled ? 'text-yellow-700' : 'text-yellow-700'
+            }`}>
+              <User className="w-5 h-5 mb-1" />
+              <p className="text-xs">Mi cuenta</p>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      {/* Hero section */}
+      <section
+        className="h-[80vh] w-full bg-no-repeat bg-cover bg-center flex items-center justify-center"
+        style={{ backgroundImage: "url('/images/adoptionsPrincipal.svg')" }}
+      >
+      </section>
+
+      {/* Texto principal */}
+      <section className="flex flex-col md:flex-row p-6 gap-6">
+        <div className="md:w-1/2">
+          <h3 className="text-2xl text-yellow-700 font-bold mb-4">Adopta, no compres. Cambia una vida hoy</h3>
+          <BotonEstado> Saber más </BotonEstado>
+        </div>
+        <p className="md:w-1/2 text-justify">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry...
+        </p>
+      </section>
+
+      {/* Servicios */}
+      <section className="p-6 text-center">
+        <h3 className="text-2xl font-bold text-yellow-700 mb-6">Conoce nuestros servicios</h3>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { title: 'Adopta', img: '/dog1.jpg' },
+            { title: 'Dona', img: '/donate.jpg' },
+            { title: 'Apadrina', img: '/cat1.jpg' }
+          ].map((s) => (
+            <div key={s.title} className="bg-white rounded shadow p-4">
+              <img src={s.img} alt={s.title} className="w-full h-40 object-cover mb-4" />
+              <h4 className="font-semibold">{s.title}</h4>
+              <p className="text-sm mb-4">Texto descriptivo del servicio.</p>
+              <BotonEstado estado="seleccionado">Saber más</BotonEstado>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ¿Cómo ayudar? */}
+      <section className="p-6">
+        <h3 className="text-2xl font-bold text-yellow-700 mb-6">¿Cómo ayudar?</h3>
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex-1 space-y-3">
+            <p><strong>Donaciones</strong> — Apoya con recursos monetarios o en especie.</p>
+            <p><strong>Voluntariados</strong> — Ayuda en refugios o en eventos.</p>
+            <p><strong>Casas temporales</strong> — Ofrece un hogar mientras encuentran familia.</p>
+            <BotonEstado estado="default">Saber más</BotonEstado>
+          </div>
+          <img src="/help.jpg" alt="Ayuda" className="w-full md:w-1/2 rounded shadow" />
+        </div>
+      </section>
+
+      {/* Casos de éxito */}
+      <section className="p-6">
+        <h3 className="text-2xl font-bold text-yellow-700 mb-6">Casos de éxito</h3>
+        <div className="grid md:grid-cols-3 gap-6">
+          {['/success1.jpg', '/success2.jpg', '/success3.jpg'].map((src, idx) => (
+            <div key={idx} className="bg-white rounded shadow p-4">
+              <img src={src} alt={`Caso ${idx + 1}`} className="w-full h-40 object-cover rounded mb-3" />
+              <h4 className="font-semibold">Subheading</h4>
+              <p className="text-sm">Texto de ejemplo para el caso de éxito.</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonios */}
+      <section className="p-6">
+        <h3 className="text-2xl font-bold text-yellow-700 mb-6">Testimonios</h3>
+        <div className="grid md:grid-cols-4 gap-4">
+          {[
+            '“A terrific piece of praise”',
+            '“A fantastic bit of feedback”',
+            '“A genuinely glowing review”',
+            '“Amazing!”'
+          ].map((quote, idx) => (
+            <div key={idx} className="border rounded p-4 shadow-sm">
+              <p className="italic mb-2">“{quote}”</p>
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                <div>
+                  <p className="text-sm font-bold">Nombre</p>
+                  <p className="text-xs">Descripción</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-100 p-6 mt-10">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+          <h4 className="text-yellow-700 font-bold text-xl">Section heading</h4>
+          <div className="space-x-2 mt-4 md:mt-0">
+            <BotonEstado>Button</BotonEstado>
+            <BotonEstado estado="desactivado">Secondary button</BotonEstado>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          {[...Array(4)].map((_, i) => (
+            <div key={i}>
+              <p className="font-semibold mb-1">Topic</p>
+              <ul>
+                <li>Page</li>
+                <li>Page</li>
+                <li>Page</li>
+                <li>Page</li>
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between items-center mt-6 text-sm text-gray-600">
+          <p>Site name</p>
+          <div className="flex gap-4">
+            <span>🌐</span>
+            <span>📘</span>
+            <span>📷</span>
+            <span>▶️</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
