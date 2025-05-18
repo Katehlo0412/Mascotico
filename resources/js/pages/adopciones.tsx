@@ -7,8 +7,22 @@ import {
 } from 'lucide-react';
 import BotonEstado from '@/components/status-button';
 
+interface Animal {
+  id: number;
+  nombre: string;
+  especie: string;
+  edad: string;
+  descripcion: string;
+  foto?: string;
+  link?: string;
+}
+
 export default function AdopcionPage() {
   const [scrolled, setScrolled] = useState(false);
+  const [animales, setAnimales] = useState<Animal[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState<number | null>(null);
+  const [formData, setFormData] = useState({ nombre: '', apellidos: '', correo: '' });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +31,33 @@ export default function AdopcionPage() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    fetch('/animales')
+      .then(res => res.json())
+      .then(data => {
+        setAnimales(data);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleOpenForm = (animalId: number) => {
+    setShowForm(animalId);
+    setFormData({ nombre: '', apellidos: '', correo: '' });
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Aquí puedes hacer un fetch/axios para enviar los datos a tu backend si lo deseas
+    alert('¡Solicitud enviada!');
+    setShowForm(null);
+  };
 
   return (
     <div className="font-sans text-gray-800 bg-white">
@@ -163,6 +204,111 @@ export default function AdopcionPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Animales en adopción */}
+      <section className="p-6">
+        <h2 className="text-2xl font-bold text-yellow-700 mb-6">Animales en adopción</h2>
+        {loading ? (
+          <p>Cargando animales...</p>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-6">
+            {animales.map(animal => (
+              <div key={animal.id} className="bg-white rounded shadow p-4">
+                <img
+                  src={animal.foto || '/images/default-animal.jpg'}
+                  alt={animal.nombre}
+                  className="w-full h-40 object-cover mb-4"
+                />
+                <h4 className="font-semibold">{animal.nombre}</h4>
+                <p className="text-sm mb-1"><strong>Especie:</strong> {animal.especie}</p>
+                <p className="text-sm mb-1"><strong>Edad:</strong> {animal.edad}</p>
+                <p className="text-sm mb-2">{animal.descripcion}</p>
+                <button
+                  className="bg-yellow-700 text-white px-4 py-2 rounded mt-2"
+                  onClick={() => handleOpenForm(animal.id)}
+                >
+                  Quiero adoptar
+                </button>
+                {showForm === animal.id && (
+                  <form onSubmit={handleSubmit} className="mt-4 bg-gray-50 p-4 rounded shadow">
+                    <p className="mb-3 text-sm text-gray-700">
+                      Por favor, rellena el siguiente formulario para solicitar la adopción de <span className="font-semibold">{animal.nombre}</span>. Indica el nombre del animal y cualquier información adicional relevante.
+                    </p>
+                    <div className="mb-2">
+                      <label className="block text-sm">Nombre del animal</label>
+                      <input
+                        type="text"
+                        name="animal_nombre"
+                        value={animal.nombre}
+                        readOnly
+                        className="w-full border rounded px-2 py-1 bg-gray-100"
+                      />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm">Tu nombre</label>
+                      <input
+                        type="text"
+                        name="nombre"
+                        value={formData.nombre}
+                        onChange={handleChange}
+                        required
+                        className="w-full border rounded px-2 py-1"
+                      />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm">Tus apellidos</label>
+                      <input
+                        type="text"
+                        name="apellidos"
+                        value={formData.apellidos}
+                        onChange={handleChange}
+                        required
+                        className="w-full border rounded px-2 py-1"
+                      />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm">Correo electrónico</label>
+                      <input
+                        type="email"
+                        name="correo"
+                        value={formData.correo}
+                        onChange={handleChange}
+                        required
+                        className="w-full border rounded px-2 py-1"
+                      />
+                    </div>
+                    <div className="mb-2">
+                      <label className="block text-sm">Mensaje adicional</label>
+                      <textarea
+                        name="mensaje"
+                        onChange={handleChange}
+                        className="w-full border rounded px-2 py-1"
+                        rows={3}
+                        placeholder="Cuéntanos por qué quieres adoptar o cualquier información relevante..."
+                      />
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        type="submit"
+                        className="bg-yellow-700 text-white px-4 py-2 rounded"
+                      >
+                        Enviar solicitud
+                      </button>
+                      <button
+                        type="button"
+                        className="bg-gray-300 px-4 py-2 rounded"
+                        onClick={() => setShowForm(null)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Footer */}

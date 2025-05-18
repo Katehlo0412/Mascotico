@@ -8,6 +8,7 @@ use App\Http\Controllers\GuarderiaController;
 use App\Http\Controllers\PaseadorController;
 use App\Http\Controllers\EntrenamientoController;
 use App\Http\Controllers\RescateController;
+use App\Http\Controllers\AnimalController;
 
 Route::get('/', function () {
     return Inertia::render('home');
@@ -37,6 +38,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 });
+
+Route::apiResource('animales', AnimalController::class);
 
 
 
