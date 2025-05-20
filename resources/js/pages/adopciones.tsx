@@ -214,26 +214,34 @@ export default function AdopcionPage() {
         ) : (
           <div className="grid md:grid-cols-3 gap-6">
             {animales.map(animal => (
-              <div key={animal.id} className="bg-white rounded shadow p-4">
-                <img
-                  src={animal.foto || '/images/default-animal.jpg'}
-                  alt={animal.nombre}
-                  className="w-full h-40 object-cover mb-4"
-                />
-                <h4 className="font-semibold">{animal.nombre}</h4>
-                <p className="text-sm mb-1"><strong>Especie:</strong> {animal.especie}</p>
-                <p className="text-sm mb-1"><strong>Edad:</strong> {animal.edad}</p>
-                <p className="text-sm mb-2">{animal.descripcion}</p>
+              <div
+                key={animal.id}
+                className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 transition hover:shadow-2xl"
+                style={{ minHeight: 420 }}
+              >
+                <div className="w-full flex justify-center mb-4">
+                  <img
+                    src={animal.foto || '/images/default-animal.jpg'}
+                    alt={animal.nombre}
+                    className="w-40 h-40 object-contain bg-gray-100 rounded-full border"
+                  />
+                </div>
+                <h4 className="font-bold text-lg text-yellow-700 mb-1 text-center">{animal.nombre}</h4>
+                <div className="w-full flex flex-col gap-1 mb-2 text-center">
+                  <p className="text-sm"><strong>Especie:</strong> {animal.especie}</p>
+                  <p className="text-sm"><strong>Edad:</strong> {animal.edad}</p>
+                  <p className="text-sm"><strong>Descripción:</strong> {animal.descripcion}</p>
+                </div>
                 <button
-                  className="bg-yellow-700 text-white px-4 py-2 rounded mt-2"
+                  className="bg-yellow-700 text-white px-4 py-2 rounded mt-2 w-full font-semibold"
                   onClick={() => handleOpenForm(animal.id)}
                 >
                   Quiero adoptar
                 </button>
                 {showForm === animal.id && (
-                  <form onSubmit={handleSubmit} className="mt-4 bg-gray-50 p-4 rounded shadow">
-                    <p className="mb-3 text-sm text-gray-700">
-                      Por favor, rellena el siguiente formulario para solicitar la adopción de <span className="font-semibold">{animal.nombre}</span>. Indica el nombre del animal y cualquier información adicional relevante.
+                  <form onSubmit={handleSubmit} className="mt-4 w-full bg-gray-50 p-4 rounded shadow">
+                    <p className="mb-3 text-sm text-gray-700 text-center">
+                      Por favor, rellena el siguiente formulario para solicitar la adopción de <span className="font-semibold">{animal.nombre}</span>.
                     </p>
                     <div className="mb-2">
                       <label className="block text-sm">Nombre del animal</label>
@@ -288,16 +296,16 @@ export default function AdopcionPage() {
                         placeholder="Cuéntanos por qué quieres adoptar o cualquier información relevante..."
                       />
                     </div>
-                    <div className="flex gap-2 mt-2">
+                    <div className="flex gap-2 mt-2 justify-center">
                       <button
                         type="submit"
-                        className="bg-yellow-700 text-white px-4 py-2 rounded"
+                        className="bg-yellow-700 text-white px-4 py-2 rounded font-semibold"
                       >
                         Enviar solicitud
                       </button>
                       <button
                         type="button"
-                        className="bg-gray-300 px-4 py-2 rounded"
+                        className="bg-gray-300 px-4 py-2 rounded font-semibold"
                         onClick={() => setShowForm(null)}
                       >
                         Cancelar
