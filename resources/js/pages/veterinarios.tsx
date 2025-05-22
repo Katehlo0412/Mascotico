@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { BreadcrumbItem } from '@/types';
-import AppLayout from '@/layouts/app-layout';
+import ServiceCard from '@/components/ServiceCard';
 
 interface Veterinario {
     title?: string;
@@ -10,6 +9,7 @@ interface Veterinario {
     phone?: string;
     hours?: string;
     link?: string;
+    imageUrl?: string;
 }
 
 interface Props {
@@ -17,14 +17,6 @@ interface Props {
     error?: string;
     ubicacion?: string;
 }
-
-
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Veterinarios',
-    href: '/veterinarios',
-  },
-];
 
 const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
     const [search, setSearch] = useState(ubicacion);
@@ -36,81 +28,62 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-        <div>
-            <h1>Veterinarios</h1>
+        <div className="container mx-auto px-4 py-8">
+            <h1 className="text-3xl font-bold text-yellow-700 mb-8">Veterinarios</h1>
 
             {/* Mostrar mensajes de error */}
             {error && (
-                <div style={{ color: 'red', marginBottom: '20px' }}>
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                     {error}
                 </div>
             )}
 
             {/* Formulario de búsqueda */}
-            <form onSubmit={handleBuscar} style={{ marginBottom: '20px' }}>
-                <input
-                    type="text"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Ingresa tu ubicación"
-                    required
-                    style={{
-                        padding: '10px',
-                        width: '300px',
-                        border: '1px solid #ccc',
-                        borderRadius: '5px',
-                        marginRight: '10px',
-                    }}
-                />
-                <button
-                    type="submit"
-                    style={{
-                        padding: '10px 20px',
-                        backgroundColor: '#007BFF',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    Buscar
-                </button>
+            <form onSubmit={handleBuscar} className="mb-8">
+                <div className="flex gap-4">
+                    <input
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Ingresa tu ubicación"
+                        required
+                        className="flex-1 px-4 py-2 border-2 border-yellow-700 rounded-lg focus:outline-none focus:border-yellow-800"
+                    />
+                    <button
+                        type="submit"
+                        className="px-6 py-2 bg-yellow-700 text-white rounded-lg hover:bg-yellow-800 transition-colors"
+                    >
+                        Buscar
+                    </button>
+                </div>
             </form>
 
             {/* Resultados */}
             {ubicacion && resultados.length > 0 ? (
-                <div>
-                    <h2>Resultados de búsqueda:</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {resultados.map((veterinario, index) => (
-                        <div key={index}>
-                            <h3>{veterinario.title || 'Sin nombre'}</h3>
-                            <p><strong>Dirección:</strong> {veterinario.address || 'Sin dirección'}</p>
-                            <p><strong>Valoración:</strong> {veterinario.rating || 'N/A'}</p>
-                            <p><strong>Teléfono:</strong> {veterinario.phone || 'No disponible'}</p>
-                            <p><strong>Horario:</strong> {veterinario.hours || 'No disponible'}</p>
-                            {veterinario.link && (
-                                <p>
-                                    <a
-                                        href={veterinario.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        style={{ color: '#007BFF', textDecoration: 'underline' }}
-                                    >
-                                        Ver más detalles
-                                    </a>
-                                </p>
-                            )}
-                        </div>
+                        <ServiceCard
+                            key={index}
+                            title={veterinario.title || 'Sin nombre'}
+                            address={veterinario.address}
+                            rating={veterinario.rating}
+                            phone={veterinario.phone}
+                            hours={veterinario.hours}
+                            link={veterinario.link}
+                            imageUrl={veterinario.imageUrl}
+                        />
                     ))}
                 </div>
             ) : ubicacion ? (
-                <p>No se encontraron veterinarios cerca de la ubicación ingresada.</p>
+                <p className="text-gray-600 text-center py-8">
+                    No se encontraron veterinarios cerca de la ubicación ingresada.
+                </p>
             ) : (
-                <p>Por favor, ingresa una ubicación para buscar veterinarios.</p>
+                <p className="text-gray-600 text-center py-8">
+                    Por favor, ingresa una ubicación para buscar veterinarios.
+                </p>
             )}
         </div>
-        </AppLayout>
     );
 };
 
