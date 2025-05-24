@@ -9,6 +9,7 @@ use App\Http\Controllers\PaseadorController;
 use App\Http\Controllers\EntrenamientoController;
 use App\Http\Controllers\RescateController;
 use App\Http\Controllers\AnimalController;
+use App\Http\Controllers\ProductoController;
 
 Route::get('/', function () {
     return Inertia::render('home');
@@ -41,8 +42,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::apiResource('animales', AnimalController::class);
 
+Route::get('/tienda', function () {
+    return Inertia::render('tienda');
+})->name('tienda');
 
-
+Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
 
 
 require __DIR__.'/settings.php';
