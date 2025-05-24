@@ -11,4 +11,9 @@ class ProductoController extends Controller
     {
         return Producto::all();
     }
+    
+    public function show($id)
+    {
+        return \App\Models\Producto::findOrFail($id);
+    }
 }

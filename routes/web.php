@@ -47,7 +47,10 @@ Route::get('/tienda', function () {
 })->name('tienda');
 
 Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
-
+Route::get('/producto/{id}', function ($id) {
+    return Inertia::render('producto', ['id' => (int)$id]);
+})->name('producto.show');
+Route::get('/productos/{id}', [ProductoController::class, 'show']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
