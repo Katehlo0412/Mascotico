@@ -95,7 +95,7 @@ export default function ProductoPage(props: any) {
       {/* Descripción extendida */}
       <div className="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-xl shadow space-y-4">
         <h2 className="text-xl font-semibold text-gray-800">Descripción</h2>
-        <p className="text-gray-700">{producto.descripcion}</p>
+        <p className="text-gray-700 whitespace-pre-line">{producto.descripcion}</p>
       </div>
     </div>
   );
