@@ -14,6 +14,11 @@ export default function ProductoPage(props: any) {
   const id = props.id;
   const [producto, setProducto] = useState<Producto | null>(null);
   const [cantidad, setCantidad] = useState(1);
+  const [codigo, setCodigo] = useState('');
+  const [descuento, setDescuento] = useState(0);
+  const [errorCodigo, setErrorCodigo] = useState('');
+  const CODIGO_VALIDO = 'MASCOTICO10';
+  const PORCENTAJE_DESCUENTO = 10; // 10%
 
   useEffect(() => {
     if (id) {
@@ -31,6 +36,11 @@ export default function ProductoPage(props: any) {
       </div>
     );
   }
+
+  const precioSinDescuento = Number(producto.precio) * cantidad;
+  const precioFinal = descuento > 0
+    ? precioSinDescuento * (1 - descuento / 100)
+    : precioSinDescuento;
 
   return (
     <div className="bg-gray-50 min-h-screen py-10 px-4 md:px-16">
@@ -61,23 +71,88 @@ export default function ProductoPage(props: any) {
             <h1 className="text-3xl font-extrabold text-gray-800 mb-2">{producto.nombre}</h1>
             <p className="text-sm text-gray-500 mb-2 uppercase tracking-widest">{producto.marca}</p>
             <p className="text-2xl text-orange-600 font-bold mb-6">
-              {(Number(producto.precio) * cantidad).toFixed(2)} €
+              {precioFinal.toFixed(2)} €
               <span className="text-base text-gray-500 font-normal ml-2">
                 ({Number(producto.precio).toFixed(2)} €/ud)
               </span>
+              {descuento > 0 && (
+                <span className="ml-2 text-green-600 text-base font-semibold">
+                  -{PORCENTAJE_DESCUENTO}%
+                </span>
+              )}
             </p>
 
             <div className="flex items-center gap-4 mb-6">
               <label htmlFor="cantidad" className="text-sm font-medium text-gray-600">Cantidad:</label>
-              <input
-                type="number"
-                id="cantidad"
-                min={1}
-                value={cantidad}
-                onChange={e => setCantidad(Number(e.target.value))}
-                className="w-20 border rounded px-2 py-1 text-center text-black"
-              />
+              <div className="flex items-center bg-yellow-50 border border-yellow-200 rounded-lg px-2 py-1 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => setCantidad(Math.max(1, cantidad - 1))}
+                  className="text-yellow-600 hover:bg-yellow-200 rounded-full px-2 py-0.5 text-lg font-bold transition"
+                  aria-label="Restar"
+                  disabled={cantidad <= 1}
+                >-</button>
+                <input
+                  type="number"
+                  id="cantidad"
+                  min={1}
+                  value={cantidad}
+                  onChange={e => setCantidad(Math.max(1, Number(e.target.value)))}
+                  className="w-12 bg-transparent border-0 text-center text-black focus:ring-0 font-semibold"
+                  style={{ outline: 'none' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setCantidad(cantidad + 1)}
+                  className="text-yellow-600 hover:bg-yellow-200 rounded-full px-2 py-0.5 text-lg font-bold transition"
+                  aria-label="Sumar"
+                >+</button>
+              </div>
             </div>
+
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 shadow-inner w-96">
+                <input
+                  type="text"
+                  placeholder="Código de descuento"
+                  value={codigo}
+                  onChange={e => {
+                    setCodigo(e.target.value);
+                    setErrorCodigo('');
+                  }}
+                  className="bg-transparent border-0 text-black w-full focus:ring-0 font-semibold text-base"
+                  style={{ outline: 'none' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (codigo.trim().toUpperCase() === CODIGO_VALIDO) {
+                      setDescuento(PORCENTAJE_DESCUENTO);
+                      setErrorCodigo('');
+                    } else {
+                      setDescuento(0);
+                      setErrorCodigo('Código inválido o inexistente');
+                    }
+                  }}
+                  className="ml-2 bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white px-5 py-1.5 rounded-full font-bold shadow transition-all duration-200 text-base outline-none focus:ring-2 focus:ring-orange-300"
+                >
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2l4 -4" />
+                    </svg>
+                    Aplicar
+                  </span>
+                </button>
+              </div>
+            </div>
+            {descuento > 0 && (
+              <p className="text-green-600 text-sm mb-2">¡Descuento aplicado! ({PORCENTAJE_DESCUENTO}% menos)</p>
+            )}
+            {errorCodigo && (
+              <p className="text-red-600 text-sm mb-2">{errorCodigo}</p>
+            )}
+
+            
 
             <button className="bg-orange-600 hover:bg-orange-700 text-white w-full py-3 rounded-full text-lg font-semibold transition-all">
               Añadir a la cesta

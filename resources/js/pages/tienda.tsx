@@ -14,6 +14,7 @@ interface Producto {
 export default function TiendaPage() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAd, setShowAd] = useState(true);
 
   useEffect(() => {
     fetch('/productos')
@@ -33,6 +34,36 @@ export default function TiendaPage() {
 
   return (
     <div className="p-8 bg-white min-h-screen">
+      {/* Popup de publicidad */}
+      {showAd && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-sm">
+          <div className="bg-white/95 rounded-2xl shadow-2xl p-6 max-w-xs w-full text-center relative animate-fade-in border border-yellow-200">
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl"
+              onClick={() => setShowAd(false)}
+              aria-label="Cerrar"
+            >
+              ×
+            </button>
+            <h3 className="text-lg font-bold mb-2 text-orange-600">¡Descuento exclusivo!</h3>
+            <p className="mb-3 text-gray-700 text-sm">
+              Consigue un <span className="font-bold text-orange-700">10% de descuento</span> en tu primera compra con el código:
+            </p>
+            <div className="font-mono bg-yellow-100 text-yellow-700 px-3 py-2 rounded-lg text-lg mb-3 tracking-widest shadow inline-block">
+              MASCOTICO10
+            </div>
+            <img src="/images/descuento.jpg" alt="Publicidad" className="mx-auto w-20 h-20 object-contain mb-2" />
+            <p className="text-xs text-gray-400 mt-2">Solo por tiempo limitado</p>
+          </div>
+          <style>
+            {`
+              .animate-fade-in { animation: fadeIn 0.5s; }
+              @keyframes fadeIn { from { opacity: 0; transform: scale(0.95);} to { opacity: 1; transform: scale(1);} }
+            `}
+          </style>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold text-yellow-700 mb-8 text-center">Tienda Mascotico</h1>
 
       {loading ? (
