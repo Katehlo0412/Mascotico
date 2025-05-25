@@ -60,7 +60,12 @@ export default function ProductoPage(props: any) {
             </span>
             <h1 className="text-3xl font-extrabold text-gray-800 mb-2">{producto.nombre}</h1>
             <p className="text-sm text-gray-500 mb-2 uppercase tracking-widest">{producto.marca}</p>
-            <p className="text-2xl text-orange-600 font-bold mb-6">{Number(producto.precio).toFixed(2)} €</p>
+            <p className="text-2xl text-orange-600 font-bold mb-6">
+              {(Number(producto.precio) * cantidad).toFixed(2)} €
+              <span className="text-base text-gray-500 font-normal ml-2">
+                ({Number(producto.precio).toFixed(2)} €/ud)
+              </span>
+            </p>
 
             <div className="flex items-center gap-4 mb-6">
               <label htmlFor="cantidad" className="text-sm font-medium text-gray-600">Cantidad:</label>
