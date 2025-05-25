@@ -90,14 +90,13 @@ export default function ProductoPage(props: any) {
                   onClick={() => setCantidad(Math.max(1, cantidad - 1))}
                   className="text-yellow-600 hover:bg-yellow-200 rounded-full px-2 py-0.5 text-lg font-bold transition"
                   aria-label="Restar"
-                  disabled={cantidad <= 1}
                 >-</button>
                 <input
                   type="number"
                   id="cantidad"
                   min={1}
                   value={cantidad}
-                  onChange={e => setCantidad(Math.max(1, Number(e.target.value)))}
+                  onChange={e => setCantidad(Number(e.target.value))}
                   className="w-12 bg-transparent border-0 text-center text-black focus:ring-0 font-semibold"
                   style={{ outline: 'none' }}
                 />
@@ -111,7 +110,7 @@ export default function ProductoPage(props: any) {
             </div>
 
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex items-center bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 shadow-inner w-96">
+              <div className="flex items-center bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 shadow-inner w-72">
                 <input
                   type="text"
                   placeholder="Código de descuento"
@@ -171,6 +170,16 @@ export default function ProductoPage(props: any) {
       <div className="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-xl shadow space-y-4">
         <h2 className="text-xl font-semibold text-gray-800">Descripción</h2>
         <p className="text-gray-700 whitespace-pre-line">{producto.descripcion}</p>
+      </div>
+
+      {/* Anuncio */}
+      <div className="my-8 flex justify-center">
+        <ins className="adsbygoogle"
+          style={{ display: 'block', width: '100%', maxWidth: 468, height: 60 }}
+          data-ad-client="ca-pub-1262821082958576"
+          data-ad-slot="TU_SLOT_ID" // <-- Sustituye por tu data-ad-slot real
+          data-ad-format="auto"
+        />
       </div>
     </div>
   );

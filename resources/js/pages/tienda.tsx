@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from '@inertiajs/react';
 
+// Extiende la interfaz Window para adsbygoogle
+declare global {
+  interface Window {
+    adsbygoogle?: unknown[];
+  }
+}
+
 interface Producto {
   id: number;
   nombre: string;
@@ -23,6 +30,16 @@ export default function TiendaPage() {
         setProductos(Array.isArray(data) ? data : data.data || []);
         setLoading(false);
       });
+  }, []);
+
+  // Esto recarga el anuncio cuando el componente se monta
+  useEffect(() => {
+    if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
+      try {
+        // @ts-ignore
+        window.adsbygoogle.push({});
+      } catch (e) {}
+    }
   }, []);
 
   // Agrupa productos por tipo
@@ -65,6 +82,16 @@ export default function TiendaPage() {
       )}
 
       <h1 className="text-3xl font-bold text-yellow-700 mb-8 text-center">Tienda Mascotico</h1>
+
+      {/* Bloque de anuncio */}
+      <div className="flex justify-center my-6">
+        <ins className="adsbygoogle"
+          style={{ display: 'block', width: '100%', maxWidth: 468, height: 60 }}
+          data-ad-client="ca-pub-1262821082958576"
+          data-ad-slot="1718123346" // <-- Sustituye por tu slot real
+          data-ad-format="auto"
+        />
+      </div>
 
       {loading ? (
         <p className="text-center">Cargando productos...</p>

@@ -43,5 +43,7 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1262821082958576" crossorigin="anonymous"></script>
     </body>
 </html>
