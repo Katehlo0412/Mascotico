@@ -9,6 +9,7 @@ use App\Http\Controllers\PaseadorController;
 use App\Http\Controllers\EntrenamientoController;
 use App\Http\Controllers\RescateController;
 use App\Http\Controllers\AnimalController;
+use App\Http\Controllers\ProductoController;
 
 Route::get('/', function () {
     return Inertia::render('home');
@@ -41,9 +42,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::apiResource('animales', AnimalController::class);
 
+Route::get('/tienda', function () {
+    return Inertia::render('tienda');
+})->name('tienda');
 
+Route::get('/productos/crud', function () {
+    return Inertia::render('ProductosCrud');
+})->name('productos.crud');
 
-
+Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+Route::get('/producto/{id}', function ($id) {
+    return Inertia::render('producto', ['id' => (int)$id]);
+})->name('producto.show');
+Route::get('/productos/{id}', [ProductoController::class, 'show']);
+Route::post('/productos', [ProductoController::class, 'store']);
+Route::put('/productos/{id}', [ProductoController::class, 'update']);
+Route::delete('/productos/{id}', [ProductoController::class, 'destroy']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
