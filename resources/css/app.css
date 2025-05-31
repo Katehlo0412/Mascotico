@@ -157,3 +157,68 @@
         @apply bg-background text-foreground;
     }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Responsive background images */
+@layer utilities {
+  .bg-responsive {
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+  
+  /* Ajustes específicos para resoluciones */
+  @media (max-width: 640px) {
+    .bg-responsive {
+      background-attachment: scroll;
+      background-position: center top;
+    }
+  }
+  
+  @media (min-width: 641px) and (max-width: 1366px) {
+    .bg-responsive {
+      background-position: center center;
+    }
+  }
+  
+  @media (min-width: 1367px) and (max-width: 1920px) {
+    .bg-responsive {
+      background-position: center center;
+    }
+  }
+  
+  @media (min-width: 1921px) {
+    .bg-responsive {
+      background-position: center center;
+    }
+  }
+}
+
+/* Mejorar renderizado de imágenes */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Responsive images que se adapten al contenedor */
+.img-responsive {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+/* Para imágenes que necesitan mantener proporción */
+.img-fit-cover {
+  object-fit: cover;
+  object-position: center;
+}
+
+.img-fit-contain {
+  object-fit: contain;
+  object-position: center;
+}

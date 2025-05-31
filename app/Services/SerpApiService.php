@@ -24,80 +24,35 @@ class SerpApiService
             'gl' => 'es',
         ];
 
-        $response = Http::withoutVerifying()->get('https://serpapi.com/search', $params);
-
-        if ($response->successful()) {
-            $data = $response->json();
-
-            
-            if (isset($data['local_results'])) {
-                foreach ($data['local_results'] as &$result) {
-                    $result['link'] = $result['link'] ?? $result['website'] ?? null;
-                }
-            }
-
-            return $data;
-        }
-
-        return ['error' => 'No se pudo obtener resultados'];
+        return $this->realizarBusqueda($params);
     }
 
-    public function buscarPeluqueriasCaninas($ubicacion = 'Murcia')
+    public function buscarPeluqueriasMascotas($ubicacion = 'Murcia')
     {
         $params = [
             'engine' => 'google_maps',
-            'q' => 'peluquerías caninas cerca de ' . $ubicacion,
+            'q' => 'peluquerías de mascotas cerca de ' . $ubicacion,
             'type' => 'search',
             'api_key' => $this->apiKey,
             'hl' => 'es',
             'gl' => 'es',
         ];
 
-        $response = Http::withoutVerifying()->get('https://serpapi.com/search', $params);
-
-        if ($response->successful()) {
-            $data = $response->json();
-
-            
-            if (isset($data['local_results'])) {
-                foreach ($data['local_results'] as &$result) {
-                    $result['link'] = $result['link'] ?? $result['website'] ?? null;
-                }
-            }
-
-            return $data;
-        }
-
-        return ['error' => 'No se pudo obtener resultados'];
+        return $this->realizarBusqueda($params);
     }
 
-    public function buscarGuarderiasCaninas($ubicacion = 'Murcia')
+    public function buscarGuarderiasMascotas($ubicacion = 'Murcia')
     {
         $params = [
             'engine' => 'google_maps',
-            'q' => 'guarderías caninas cerca de ' . $ubicacion,
+            'q' => 'residencias y guarderías de mascotas cerca de ' . $ubicacion,
             'type' => 'search',
             'api_key' => $this->apiKey,
             'hl' => 'es',
             'gl' => 'es',
         ];
 
-        $response = Http::withoutVerifying()->get('https://serpapi.com/search', $params);
-
-        if ($response->successful()) {
-            $data = $response->json();
-
-            
-            if (isset($data['local_results'])) {
-                foreach ($data['local_results'] as &$result) {
-                    $result['link'] = $result['link'] ?? $result['website'] ?? null;
-                }
-            }
-
-            return $data;
-        }
-
-        return ['error' => 'No se pudo obtener resultados'];
+        return $this->realizarBusqueda($params);
     }
 
     public function buscarPaseadoresDePerros($ubicacion = 'Murcia')
@@ -111,22 +66,7 @@ class SerpApiService
             'gl' => 'es',
         ];
 
-        $response = Http::withoutVerifying()->get('https://serpapi.com/search', $params);
-
-        if ($response->successful()) {
-            $data = $response->json();
-
-            
-            if (isset($data['local_results'])) {
-                foreach ($data['local_results'] as &$result) {
-                    $result['link'] = $result['link'] ?? $result['website'] ?? null;
-                }
-            }
-
-            return $data;
-        }
-
-        return ['error' => 'No se pudo obtener resultados'];
+        return $this->realizarBusqueda($params);
     }
 
     public function buscarEntrenamientosCaninos($ubicacion = 'Murcia')
@@ -140,22 +80,7 @@ class SerpApiService
             'gl' => 'es',
         ];
 
-        $response = Http::withoutVerifying()->get('https://serpapi.com/search', $params);
-
-        if ($response->successful()) {
-            $data = $response->json();
-
-            
-            if (isset($data['local_results'])) {
-                foreach ($data['local_results'] as &$result) {
-                    $result['link'] = $result['link'] ?? $result['website'] ?? null;
-                }
-            }
-
-            return $data;
-        }
-
-        return ['error' => 'No se pudo obtener resultados'];
+        return $this->realizarBusqueda($params);
     }
 
     public function buscarRescateAnimal($ubicacion = 'Murcia')
@@ -169,21 +94,47 @@ class SerpApiService
             'gl' => 'es',
         ];
 
-        $response = Http::withoutVerifying()->get('https://serpapi.com/search', $params);
+        return $this->realizarBusqueda($params);
+    }
 
-        if ($response->successful()) {
-            $data = $response->json();
+    public function buscarAdopciones($ubicacion = 'Murcia')
+    {
+        $params = [
+            'engine' => 'google_maps',
+            'q' => 'adopciones de mascotas cerca de ' . $ubicacion,
+            'type' => 'search',
+            'api_key' => $this->apiKey,
+            'hl' => 'es',
+            'gl' => 'es',
+        ];
 
-            
-            if (isset($data['local_results'])) {
-                foreach ($data['local_results'] as &$result) {
-                    $result['link'] = $result['link'] ?? $result['website'] ?? null;
+        return $this->realizarBusqueda($params);
+    }
+
+    private function realizarBusqueda($params)
+    {
+        try {
+            $response = Http::withoutVerifying()->get('https://serpapi.com/search', $params);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                
+                if (isset($data['local_results'])) {
+                    foreach ($data['local_results'] as &$result) {
+                        $result['link'] = $result['link'] ?? $result['website'] ?? null;
+                    }
                 }
+
+                return $data;
             }
 
-            return $data;
-        }
+            // Si la respuesta no fue exitosa, obtener más detalles
+            $errorData = $response->json();
+            $errorMessage = $errorData['error'] ?? $response->status() . ' - ' . $response->body();
+            return ['error' => 'Error en la API: ' . $errorMessage];
 
-        return ['error' => 'No se pudo obtener resultados'];
+        } catch (\Exception $e) {
+            return ['error' => 'Error de conexión: ' . $e->getMessage()];
+        }
     }
 }

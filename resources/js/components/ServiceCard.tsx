@@ -1,9 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Star, MapPin, Phone, Clock } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 interface ServiceCardProps {
-    title: string;
+    title?: string;
     address?: string;
     rating?: number | string;
     phone?: string;
@@ -22,56 +21,39 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     imageUrl
 }) => {
     return (
-        <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <div className="bg-white/80 backdrop-blur-[2px] rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:bg-white/90 hover:scale-105 hover:shadow-xl">
             {imageUrl && (
-                <div className="relative h-48 w-full">
+                <div className="h-48 overflow-hidden rounded-t-lg">
                     <img
                         src={imageUrl}
                         alt={title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover img-fit-cover transition-transform duration-300 hover:scale-105"
                     />
                 </div>
             )}
-            <CardHeader>
-                <CardTitle className="text-xl font-bold text-yellow-700">{title}</CardTitle>
+            <div className="p-4">
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">{title}</h3>
+                {address && <p className="text-gray-600 mb-2 text-sm">{address}</p>}
                 {rating && (
-                    <div className="flex items-center gap-1 text-yellow-500">
-                        <Star className="w-4 h-4 fill-current" />
-                        <span>{rating}</span>
+                    <div className="flex items-center mb-2">
+                        <Star className="w-5 h-5 text-yellow-500 mr-1" />
+                        <span className="text-gray-700">{rating}</span>
                     </div>
                 )}
-            </CardHeader>
-            <CardContent className="space-y-2">
-                {address && (
-                    <div className="flex items-start gap-2">
-                        <MapPin className="w-4 h-4 text-gray-500 mt-1" />
-                        <span className="text-sm text-gray-600">{address}</span>
-                    </div>
-                )}
-                {phone && (
-                    <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm text-gray-600">{phone}</span>
-                    </div>
-                )}
-                {hours && (
-                    <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm text-gray-600">{hours}</span>
-                    </div>
-                )}
+                {phone && <p className="text-gray-600 mb-2 text-sm">📞 {phone}</p>}
+                {hours && <p className="text-gray-600 mb-2 text-sm">⏰ {hours}</p>}
                 {link && (
                     <a
                         href={link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block mt-4 text-sm text-yellow-700 hover:text-yellow-800 font-medium"
+                        className="text-blue-600 hover:text-blue-800 text-sm inline-block mt-2"
                     >
-                        Ver más detalles →
+                        Ver más información →
                     </a>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 };
 
