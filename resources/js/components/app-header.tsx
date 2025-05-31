@@ -126,9 +126,17 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
 
                     <div className="ml-auto flex items-center space-x-2">
                         <div className="relative flex items-center space-x-1">
-                            <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
-                                <Search className="!size-5 opacity-80 group-hover:opacity-100" />
-                            </Button>
+                            <div className="relative flex items-center border rounded-full px-4 py-2 transition-all duration-300 hover:scale-150 hover:shadow-[0_0_50px_rgba(0,0,0,0.8)] hover:bg-red-500 hover:border-8 hover:border-blue-700 hover:ring-16 hover:ring-green-700">
+                                <input
+                                    type="text"
+                                    placeholder="Buscar..."
+                                    className="bg-transparent outline-none w-full placeholder:text-sm placeholder:tracking-wide transition-colors duration-300 hover:placeholder:text-white"
+                                />
+                                <Search
+                                    size={16}
+                                    className="ml-2 transition-colors duration-300 hover:text-white"
+                                />
+                            </div>
                             <div className="hidden lg:flex">
                                 {rightNavItems.map((item) => (
                                     <TooltipProvider key={item.title} delayDuration={0}>

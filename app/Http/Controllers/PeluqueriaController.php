@@ -21,7 +21,7 @@ class PeluqueriaController extends Controller
         $resultados = [];
 
         if ($ubicacion) {
-            $resultados = $this->serpApiService->buscarPeluqueriasCaninas($ubicacion);
+            $resultados = $this->serpApiService->buscarPeluqueriasMascotas($ubicacion);
         }
 
         return Inertia::render('peluquerias', [

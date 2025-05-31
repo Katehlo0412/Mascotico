@@ -21,7 +21,7 @@ class GuarderiaController extends Controller
         $resultados = [];
 
         if ($ubicacion) {
-            $resultados = $this->serpApiService->buscarGuarderiasCaninas($ubicacion);
+            $resultados = $this->serpApiService->buscarGuarderiasMascotas($ubicacion);
         }
 
         return Inertia::render('guarderias', [

@@ -9,6 +9,7 @@ use App\Http\Controllers\PaseadorController;
 use App\Http\Controllers\EntrenamientoController;
 use App\Http\Controllers\RescateController;
 use App\Http\Controllers\AnimalController;
+use App\Http\Controllers\AdopcionController;
 
 Route::get('/', function () {
     return Inertia::render('home');
@@ -29,9 +30,15 @@ Route::get('/entrenamientos', [EntrenamientoController::class, 'index'])->name('
 
 Route::get('/rescate', [RescateController::class, 'index'])->name('rescate.index');
 
-Route::get('/adopciones', function () {
-    return Inertia::render('adopciones');
-})->name('adopciones');
+Route::get('/adopciones', [AdopcionController::class, 'index'])->name('adopciones');
+
+Route::get('/consejos', function () {
+    return Inertia::render('consejos');
+})->name('consejos');
+
+Route::get('/comunidad', function () {
+    return Inertia::render('comunidad');
+})->name('comunidad');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
