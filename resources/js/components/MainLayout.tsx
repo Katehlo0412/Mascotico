@@ -4,7 +4,6 @@ import { Search } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import Footer from './Footer';
-import { useCarrito } from '@/hooks/use-carrito';
 import { CartProvider } from '../context/CartContext';
 import UserActions from './UserActions';
 
@@ -30,7 +29,6 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const { url, props } = usePage<PageProps>();
-  const { totalItems } = useCarrito();
   
   const user = props.auth?.user;
 
