@@ -4,19 +4,35 @@ import { Search } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import Footer from './Footer';
+import { useCarrito } from '@/hooks/use-carrito';
 import { CartProvider } from '../context/CartContext';
 import UserActions from './UserActions';
+
 
 interface MainLayoutProps {
   children: React.ReactNode;
   showSearchBar?: boolean;
 }
 
+interface PageProps {
+  [key: string]: any;
+  auth?: {
+    user?: {
+      id: number;
+      name: string;
+      email: string;
+    } | null;
+  };
+}
+
 export default function MainLayout({ children, showSearchBar = true }: MainLayoutProps) {
   const [scrolled, setScrolled] = useState(false);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
-  const { url } = usePage();
+  const { url, props } = usePage<PageProps>();
+  const { totalItems } = useCarrito();
+  
+  const user = props.auth?.user;
 
   const getPlaceholderText = () => {
     switch (url) {
@@ -160,10 +176,11 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
               </div>
             )}
 
-            {/* User actions */}
-            <UserActions scrolled={scrolled} />
-          </div>
-        </header>
+{/* User actions */}
+<UserActions scrolled={scrolled} />
+</div>
+</header>
+
 
         {/* Main content */}
         <main className="flex-grow">

@@ -101,7 +101,13 @@ export default function Home() {
         </section>
 
         {/* Recursos */}
-        <section className="grid md:grid-cols-3 gap-8 mb-10">
+        <section className="grid md:grid-cols-4 gap-8 mb-10">
+          <div className="bg-white p-4 shadow-md rounded-xl text-center transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+            <a href="/tienda" className="block">
+              <div className="text-4xl mb-2 transition-all duration-300 group-hover:scale-125 cursor-pointer">🍖</div>
+              <span className="text-blue-600 hover:underline">Nuestra Tienda</span>
+            </a>
+          </div>
           <div className="bg-white p-4 shadow-md rounded-xl text-center transition-all duration-300 hover:scale-105 hover:shadow-xl group">
             <a href="/adopciones" className="block">
               <img src="https://img.icons8.com/emoji/48/cat-face.png" alt="adopta" className="mx-auto mb-2 transition-all duration-300 group-hover:scale-125 cursor-pointer" />

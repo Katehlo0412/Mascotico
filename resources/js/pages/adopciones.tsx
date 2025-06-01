@@ -100,7 +100,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Ingresa tu ubicación"
+                placeholder="Buscar lugares de Adopcion"
                 required
                 className="flex-1 px-4 py-2 border-2 border-yellow-700 rounded-lg focus:outline-none focus:border-yellow-800 bg-white/70 backdrop-blur-sm"
               />
