@@ -3,17 +3,32 @@ import { Search, ShoppingBag, User, ChevronLeft } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import Footer from './Footer';
+import { useCarrito } from '@/hooks/use-carrito';
 
 interface MainLayoutProps {
   children: React.ReactNode;
   showSearchBar?: boolean;
 }
 
+interface PageProps {
+  [key: string]: any;
+  auth?: {
+    user?: {
+      id: number;
+      name: string;
+      email: string;
+    } | null;
+  };
+}
+
 export default function MainLayout({ children, showSearchBar = true }: MainLayoutProps) {
   const [scrolled, setScrolled] = useState(false);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
-  const { url } = usePage();
+  const { url, props } = usePage<PageProps>();
+  const { totalItems } = useCarrito();
+  
+  const user = props.auth?.user;
 
   const getPlaceholderText = () => {
     switch (url) {
@@ -158,17 +173,27 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
 
           {/* User actions */}
           <nav className="flex items-center space-x-6">
-            <Link href="/cesta" className={`flex flex-col items-center transition-all duration-300 ${
+            <Link href="/cesta" className={`flex flex-col items-center transition-all duration-300 relative ${
               scrolled ? 'text-[#DAA520]' : 'text-[#DAA520]'
             } hover:scale-150 active:scale-175`}>
-              <ShoppingBag className="w-5 h-5 mb-1" />
+              <div className="relative">
+                <ShoppingBag className="w-5 h-5 mb-1" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse">
+                    {totalItems > 99 ? '99+' : totalItems}
+                  </span>
+                )}
+              </div>
               <p className="text-xs">Cesta</p>
             </Link>
-            <Link href="/mi-cuenta" className={`flex flex-col items-center transition-all duration-300 ${
-              scrolled ? 'text-[#DAA520]' : 'text-[#DAA520]'
-            } hover:scale-150 active:scale-175`}>
+            <Link 
+              href={user ? "/mi-cuenta" : "/login"} 
+              className={`flex flex-col items-center transition-all duration-300 ${
+                scrolled ? 'text-[#DAA520]' : 'text-[#DAA520]'
+              } hover:scale-150 active:scale-175`}
+            >
               <User className="w-5 h-5 mb-1" />
-              <p className="text-xs">Mi cuenta</p>
+              <p className="text-xs">{user ? "Mi Cuenta" : "Iniciar Sesión"}</p>
             </Link>
           </nav>
         </div>

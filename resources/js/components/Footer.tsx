@@ -23,22 +23,22 @@ const Footer = () => {
               </p>
             </div>
             {/* Redes Sociales */}
-            <div className="flex gap-4 mt-2 justify-center md:justify-start">
+            <div className="flex gap-6 mt-3 justify-center md:justify-start">
               <a 
                 href="https://www.facebook.com/mascotico" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-gray-600 hover:text-[#DAA520] transition-colors"
+                className="text-gray-600 hover:text-[#1877F2] transition-all duration-300 hover:scale-125 hover:drop-shadow-lg transform"
               >
-                <FontAwesomeIcon icon={fabFacebookF} className="w-4 h-4" />
+                <FontAwesomeIcon icon={fabFacebookF} className="w-8 h-8" />
               </a>
               <a 
                 href="https://www.instagram.com/mascotico" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-gray-600 hover:text-[#DAA520] transition-colors"
+                className="text-gray-600 hover:text-[#E4405F] transition-all duration-300 hover:scale-125 hover:drop-shadow-lg transform"
               >
-                <FontAwesomeIcon icon={fabInstagram} className="w-4 h-4" />
+                <FontAwesomeIcon icon={fabInstagram} className="w-8 h-8" />
               </a>
             </div>
           </div>

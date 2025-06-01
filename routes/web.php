@@ -56,6 +56,18 @@ Route::get('/tienda', function () {
     return Inertia::render('tienda');
 })->name('tienda');
 
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mi-cuenta', function () {
+        return Inertia::render('mi-cuenta', [
+            'auth' => [
+                'user' => auth()->user()
+            ]
+        ]);
+    })->name('mi-cuenta');
+});
+
 Route::get('/productos/crud', function () {
     return Inertia::render('ProductosCrud');
 })->name('productos.crud');
