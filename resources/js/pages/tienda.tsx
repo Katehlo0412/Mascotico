@@ -3,7 +3,7 @@ import { Link } from '@inertiajs/react';
 import MainLayout from '@/components/MainLayout';
 import { useCart } from '../context/CartContext';
 
-// Extiende la interfaz Window para adsbygoogle
+
 declare global {
   interface Window {
     adsbygoogle?: unknown[];
@@ -22,9 +22,44 @@ interface Producto {
 
 function ProductosList({ productosPorTipo }: { productosPorTipo: Record<string, Producto[]> }) {
   const { addToCart } = useCart();
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupProducto, setPopupProducto] = useState<Producto | null>(null);
+
+  const handleAdd = (producto: Producto) => {
+    addToCart(producto);
+    setPopupProducto(producto);
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 1500);
+  };
 
   return (
     <div className="max-w-7xl mx-auto">
+      {/* Popup animado */}
+      {showPopup && popupProducto && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          <div className="bg-white border-2 border-orange-400 rounded-2xl px-8 py-6 shadow-2xl flex flex-col items-center animate-popup">
+            <svg className="w-12 h-12 text-green-500 mb-2 animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="#fbbf24" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2l4-4" stroke="#16a34a" strokeWidth="2" />
+            </svg>
+            <span className="text-lg font-bold text-orange-600 mb-1">¡Añadido al carrito!</span>
+            <span className="text-gray-700 text-sm">{popupProducto.nombre}</span>
+          </div>
+          <style>
+            {`
+              .animate-popup {
+                animation: popupScale 0.4s cubic-bezier(.68,-0.55,.27,1.55);
+              }
+              @keyframes popupScale {
+                0% { transform: scale(0.7); opacity: 0; }
+                60% { transform: scale(1.1); opacity: 1; }
+                100% { transform: scale(1); opacity: 1; }
+              }
+            `}
+          </style>
+        </div>
+      )}
+
       {Object.entries(productosPorTipo).map(([tipo, productosDeEsteTipo]) => (
         <section key={tipo} className="mb-10">
           <div className="flex justify-center">
@@ -58,7 +93,7 @@ function ProductosList({ productosPorTipo }: { productosPorTipo: Record<string, 
                 </Link>
                 <button
                   className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full font-semibold shadow transition-all duration-200 w-full text-base transform hover:scale-105 active:scale-95 mt-auto"
-                  onClick={() => addToCart(producto)}
+                  onClick={() => handleAdd(producto)}
                 >
                   Añadir
                 </button>
@@ -142,7 +177,7 @@ export default function TiendaPage() {
           <ins className="adsbygoogle"
             style={{ display: 'block', width: '100%', maxWidth: 468, height: 60 }}
             data-ad-client="ca-pub-1262821082958576"
-            data-ad-slot="1718123346" // <-- Sustituye por tu slot real
+            data-ad-slot="1718123346"
             data-ad-format="auto"
           />
         </div>

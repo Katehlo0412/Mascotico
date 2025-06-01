@@ -8,6 +8,7 @@ export interface Producto {
   precio: number;
   imagen?: string;
   tipo: string;
+  cantidad?: number;
 }
 
 interface CartItem extends Producto {
@@ -25,26 +26,28 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  // Lee el carrito de sessionStorage al iniciar
+ 
   const [cart, setCart] = useState<CartItem[]>(() => {
     const stored = sessionStorage.getItem('cart');
     return stored ? JSON.parse(stored) : [];
   });
 
-  // Guarda el carrito en sessionStorage cada vez que cambie
+  
   useEffect(() => {
     sessionStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (producto: Producto) => {
     setCart(prev => {
-      const found = prev.find(item => item.id === producto.id);
-      if (found) {
+      const existe = prev.find(item => item.id === producto.id);
+      if (existe) {
         return prev.map(item =>
-          item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
+          item.id === producto.id
+            ? { ...item, cantidad: (item.cantidad || 1) + (producto.cantidad || 1) }
+            : item
         );
       }
-      return [...prev, { ...producto, cantidad: 1 }];
+      return [...prev, { ...producto, cantidad: producto.cantidad || 1 }];
     });
   };
 
