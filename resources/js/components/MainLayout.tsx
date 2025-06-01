@@ -1,8 +1,11 @@
+import { useCart } from '../context/CartContext';
 import React, { useState, useEffect } from 'react';
-import { Search, ShoppingBag, User, ChevronLeft } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import Footer from './Footer';
+import { CartProvider } from '../context/CartContext';
+import UserActions from './UserActions';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -85,102 +88,91 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
-      <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-white shadow-md' : 'bg-transparent'
-        }`}
-      >
-        <div className="flex items-center justify-between px-6 py-4">
-          {/* Logo */}
-          <button
-            type="button"
-            onClick={() => Inertia.visit('/', { replace: true })}
-            className="flex items-center gap-2 group transition-all focus:outline-none"
-            style={{ background: 'none', border: 'none', padding: 0, margin: 0 }}
-          >
-            <span className="text-4xl sm:text-5xl md:text-6xl drop-shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_3px_12px_rgba(0,0,0,0.25)] group-active:scale-105">🐾</span>
-            <span
-              className="text-3xl sm:text-4xl md:text-5xl font-black text-[#DAA520] tracking-wider drop-shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-[0_3px_12px_rgba(0,0,0,0.25)] group-active:scale-102"
-              style={{
-                fontFamily: "'Montserrat', sans-serif",
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                WebkitTextStroke: '1.5px #B8860B',
-                textShadow: '2.5px 2.5px 5px rgba(0,0,0,0.25)'
-              }}
+    <CartProvider>
+      <div className="min-h-screen flex flex-col">
+        {/* Navbar */}
+        <header
+          className={`sticky top-0 z-50 transition-all duration-300 ${
+            scrolled ? 'bg-white shadow-md' : 'bg-transparent'
+          }`}
+        >
+          <div className="flex items-center justify-between px-6 py-4">
+            {/* Logo */}
+            <button
+              type="button"
+              onClick={() => Inertia.visit('/', { replace: true })}
+              className="flex items-center gap-2 group transition-all focus:outline-none"
+              style={{ background: 'none', border: 'none', padding: 0, margin: 0 }}
             >
-              Mascotico
-            </span>
-          </button>
+              <span className="text-4xl sm:text-5xl md:text-6xl drop-shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-[0_3px_12px_rgba(0,0,0,0.25)] group-active:scale-105">🐾</span>
+              <span
+                className="text-3xl sm:text-4xl md:text-5xl font-black text-[#DAA520] tracking-wider drop-shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-[0_3px_12px_rgba(0,0,0,0.25)] group-active:scale-102"
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  WebkitTextStroke: '1.5px #B8860B',
+                  textShadow: '2.5px 2.5px 5px rgba(0,0,0,0.25)'
+                }}
+              >
+                Mascotico
+              </span>
+            </button>
 
-          {/* Search bar */}
-          {showSearchBar && (
-            <div className="flex-1 max-w-2xl mx-8">
-              <form onSubmit={handleSearch} action="javascript:void(0);">
-                <div className={`flex items-center border-2 rounded-full px-4 py-2 transition-all duration-300 ${
-                  scrolled ? 'border-[#DAA520] bg-white' : 'border-[#DAA520] bg-white/80'
-                } hover:shadow-md focus-within:shadow-md focus-within:border-[#B8860B] hover:scale-102 focus-within:scale-102 hover:border-2 focus-within:border-2`}>
-                  <input
-                    type="text"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder={getPlaceholderText()}
-                    className={`bg-transparent outline-none w-full placeholder:text-sm placeholder:tracking-wide transition-colors duration-300 ${
-                      scrolled ? 'placeholder:text-gray-500' : 'placeholder:text-gray-600'
-                    }`}
-                    disabled={loading}
-                  />
-                  <button 
-                    type="submit"
-                    className="ml-2 p-2 rounded-full hover:bg-[#DAA520]/20 active:bg-[#DAA520]/40 transition-all duration-150 -mr-2"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <svg className="animate-spin h-5 w-5 text-[#DAA520]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                      </svg>
-                    ) : (
-                      <Search
-                        size={20}
-                        className={`transition-all duration-300 ${
-                          scrolled ? 'text-[#DAA520]' : 'text-[#DAA520]'
-                        } hover:scale-150 active:scale-175`}
-                      />
-                    )}
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
+            {/* Search bar */}
+            {showSearchBar && (
+              <div className="flex-1 max-w-2xl mx-8">
+                <form onSubmit={handleSearch} action="javascript:void(0);">
+                  <div className={`flex items-center border-2 rounded-full px-4 py-2 transition-all duration-300 ${
+                    scrolled ? 'border-[#DAA520] bg-white' : 'border-[#DAA520] bg-white/80'
+                  } hover:shadow-md focus-within:shadow-md focus-within:border-[#B8860B] hover:scale-102 focus-within:scale-102 hover:border-2 focus-within:border-2`}>
+                    <input
+                      type="text"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      placeholder={getPlaceholderText()}
+                      className={`bg-transparent outline-none w-full placeholder:text-sm placeholder:tracking-wide transition-colors duration-300 ${
+                        scrolled ? 'placeholder:text-gray-500' : 'placeholder:text-gray-600'
+                      }`}
+                      disabled={loading}
+                    />
+                    <button 
+                      type="submit"
+                      className="ml-2 p-2 rounded-full hover:bg-[#DAA520]/20 active:bg-[#DAA520]/40 transition-all duration-150 -mr-2"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <svg className="animate-spin h-5 w-5 text-[#DAA520]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        </svg>
+                      ) : (
+                        <Search
+                          size={20}
+                          className={`transition-all duration-300 ${
+                            scrolled ? 'text-[#DAA520]' : 'text-[#DAA520]'
+                          } hover:scale-150 active:scale-175`}
+                        />
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
 
-          {/* User actions */}
-          <nav className="flex items-center space-x-6">
-            <Link href="/cesta" className={`flex flex-col items-center transition-all duration-300 ${
-              scrolled ? 'text-[#DAA520]' : 'text-[#DAA520]'
-            } hover:scale-150 active:scale-175`}>
-              <ShoppingBag className="w-5 h-5 mb-1" />
-              <p className="text-xs">Cesta</p>
-            </Link>
-            <Link href="/mi-cuenta" className={`flex flex-col items-center transition-all duration-300 ${
-              scrolled ? 'text-[#DAA520]' : 'text-[#DAA520]'
-            } hover:scale-150 active:scale-175`}>
-              <User className="w-5 h-5 mb-1" />
-              <p className="text-xs">Mi cuenta</p>
-            </Link>
-          </nav>
-        </div>
-      </header>
+            {/* User actions */}
+            <UserActions scrolled={scrolled} />
+          </div>
+        </header>
 
-      {/* Main content */}
-      <main className="flex-grow">
-        {children}
-      </main>
+        {/* Main content */}
+        <main className="flex-grow">
+          {children}
+        </main>
 
-      {/* Footer */}
-      <Footer />
-    </div>
+        {/* Footer */}
+        <Footer />
+      </div>
+    </CartProvider>
   );
 }
