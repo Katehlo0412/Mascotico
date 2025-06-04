@@ -51,8 +51,9 @@ class AnimalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Animal $animal)
+    public function update(Request $request, $id)
     {
+        $animal = Animal::findOrFail($id);
         $animal->update($request->all());
         return response()->json($animal);
     }
@@ -60,9 +61,9 @@ class AnimalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Animal $animal)
+    public function destroy($id)
     {
-        $animal->delete();
+        Animal::destroy($id);
         return response()->json(null, 204);
     }
 }
