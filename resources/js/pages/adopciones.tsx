@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import MainLayout from '@/components/MainLayout';
@@ -14,6 +14,15 @@ interface Adopcion {
   imageUrl?: string;
 }
 
+interface Animal {
+  id: number;
+  nombre: string;
+  especie: string;
+  edad: string;
+  descripcion: string;
+  foto?: string;
+}
+
 interface Props {
   resultados?: Adopcion[];
   error?: string;
@@ -24,6 +33,19 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
   const [search, setSearch] = useState(ubicacion || '');
   const [loading, setLoading] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const [animales, setAnimales] = useState<Animal[]>([]);
+  const [loadingAnimales, setLoadingAnimales] = useState(true);
+  const [showForm, setShowForm] = useState<number | null>(null);
+  const [formData, setFormData] = useState({ nombre: '', apellidos: '', correo: '' });
+
+  useEffect(() => {
+    fetch('/animales')
+      .then(res => res.json())
+      .then(data => {
+        setAnimales(data);
+        setLoadingAnimales(false);
+      });
+  }, []);
 
   const handleBuscar = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +54,23 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
       onFinish: () => setLoading(false)
     });
     setSearch('');
+  };
+
+  const handleOpenForm = (animalId: number) => {
+    setShowForm(animalId);
+    setFormData({ nombre: '', apellidos: '', correo: '' });
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('¡Solicitud enviada!');
+    setShowForm(null);
   };
 
   return (
@@ -91,87 +130,115 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
         </section>
 
         {/* Animales en adopción (buscador y cards de SerpApi) */}
-        <section className="p-6 bg-white">
+        <section className="p-6">
           <h2 className="text-2xl font-bold text-yellow-700 mb-6">Animales en adopción</h2>
-          {/* Buscador por ubicación */}
-          <form onSubmit={handleBuscar} action="javascript:void(0);" className="mb-6 mt-6">
-            <div className="flex gap-4">
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar lugares de Adopcion"
-                required
-                className="flex-1 px-4 py-2 border-2 border-yellow-700 rounded-lg focus:outline-none focus:border-yellow-800 bg-white/70 backdrop-blur-sm"
-              />
-              <button
-                type="submit"
-                className="px-6 py-2 bg-yellow-700/90 text-white rounded-lg hover:bg-yellow-800 transition-colors backdrop-blur-sm"
-                disabled={loading}
-              >
-                {loading ? 'Buscando...' : 'Buscar'}
-              </button>
-            </div>
-          </form>
-          {/* Mostrar mensajes de error */}
-          {error && (
-            <div className="bg-red-100/80 border border-red-400 text-red-700 px-4 py-3 rounded mt-4 backdrop-blur-sm">
-              {error}
-            </div>
-          )}
-          {/* Loader animado */}
-          {loading && (
-            <div className="flex justify-center items-center h-40">
-              <svg className="animate-spin h-10 w-10 text-yellow-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-              </svg>
-              <span className="ml-4 text-yellow-700 font-semibold text-lg">Cargando resultados...</span>
-            </div>
-          )}
-          {/* Resultados de búsqueda */}
-          {!loading && ubicacion && (
-            resultados.length > 0 ? (
-              <>
-                {/* Botón Volver */}
-                <button
-                  className="mb-4 px-6 py-2 bg-yellow-700/90 text-white rounded-lg font-semibold hover:bg-yellow-800 transition-colors backdrop-blur-sm"
-                  onClick={() => Inertia.replace('/adopciones')}
+          {loadingAnimales ? (
+            <p>Cargando animales...</p>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-6">
+              {animales.map(animal => (
+                <div
+                  key={animal.id}
+                  className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 transition hover:shadow-2xl"
+                  style={{ minHeight: 420 }}
                 >
-                  Volver
-                </button>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-                  {resultados.map((adopcion, index) => (
-                    <div key={index} className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 transition hover:shadow-2xl border border-gray-100">
-                      <h4 className="font-bold text-lg text-yellow-700 mb-1">{adopcion.title || 'Sin nombre'}</h4>
-                      <div className="w-full flex flex-col gap-2 mb-4">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-semibold">Dirección:</span>
-                          <span className="text-sm">{adopcion.address}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-semibold">Teléfono:</span>
-                          <span className="text-sm">{adopcion.phone}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm font-semibold">Horario:</span>
-                          <span className="text-sm">{adopcion.hours}</span>
-                        </div>
+                  <div className="w-full flex justify-center mb-4">
+                    <img
+                      src={animal.foto || '/images/default-animal.jpg'}
+                      alt={animal.nombre}
+                      className="w-40 h-40 object-contain bg-gray-100 rounded-full border"
+                    />
+                  </div>
+                  <h4 className="font-bold text-lg text-yellow-700 mb-1 text-center">{animal.nombre}</h4>
+                  <div className="w-full flex flex-col gap-1 mb-2 text-center">
+                    <p className="text-sm"><strong>Especie:</strong> {animal.especie}</p>
+                    <p className="text-sm"><strong>Edad:</strong> {animal.edad}</p>
+                    <p className="text-sm"><strong>Descripción:</strong> {animal.descripcion}</p>
+                  </div>
+                  <button
+                    className="bg-yellow-700 text-white px-4 py-2 rounded mt-2 w-full font-semibold"
+                    onClick={() => handleOpenForm(animal.id)}
+                  >
+                    Quiero adoptar
+                  </button>
+                  {showForm === animal.id && (
+                    <form onSubmit={handleSubmit} className="mt-4 w-full bg-gray-50 p-4 rounded shadow">
+                      <p className="mb-3 text-sm text-gray-700 text-center">
+                        Por favor, rellena el siguiente formulario para solicitar la adopción de <span className="font-semibold">{animal.nombre}</span>.
+                      </p>
+                      <div className="mb-2">
+                        <label className="block text-sm">Nombre del animal</label>
+                        <input
+                          type="text"
+                          name="animal_nombre"
+                          value={animal.nombre}
+                          readOnly
+                          className="w-full border rounded px-2 py-1 bg-gray-100"
+                        />
                       </div>
-                      {adopcion.link && (
-                        <a href={adopcion.link} target="_blank" rel="noopener noreferrer" className="bg-yellow-700 text-white px-6 py-2 rounded-full mt-2 w-full font-semibold hover:bg-yellow-600 transition-colors text-center block">
-                          Ver más detalles
-                        </a>
-                      )}
-                    </div>
-                  ))}
+                      <div className="mb-2">
+                        <label className="block text-sm">Tu nombre</label>
+                        <input
+                          type="text"
+                          name="nombre"
+                          value={formData.nombre}
+                          onChange={handleChange}
+                          required
+                          className="w-full border rounded px-2 py-1"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <label className="block text-sm">Tus apellidos</label>
+                        <input
+                          type="text"
+                          name="apellidos"
+                          value={formData.apellidos}
+                          onChange={handleChange}
+                          required
+                          className="w-full border rounded px-2 py-1"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <label className="block text-sm">Correo electrónico</label>
+                        <input
+                          type="email"
+                          name="correo"
+                          value={formData.correo}
+                          onChange={handleChange}
+                          required
+                          className="w-full border rounded px-2 py-1"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <label className="block text-sm">Mensaje adicional</label>
+                        <textarea
+                          name="mensaje"
+                          onChange={handleChange}
+                          className="w-full border rounded px-2 py-1"
+                          rows={3}
+                          placeholder="Cuéntanos por qué quieres adoptar o cualquier información relevante..."
+                        />
+                      </div>
+                      <div className="flex gap-2 mt-2 justify-center">
+                        <button
+                          type="submit"
+                          className="bg-yellow-700 text-white px-4 py-2 rounded font-semibold"
+                        >
+                          Enviar solicitud
+                        </button>
+                        <button
+                          type="button"
+                          className="bg-gray-300 px-4 py-2 rounded font-semibold"
+                          onClick={() => setShowForm(null)}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </form>
+                  )}
                 </div>
-              </>
-            ) : (
-              <p className="text-red-700 text-left py-6 drop-shadow-sm">
-                No se encontraron adopciones cerca de la ubicación ingresada.
-              </p>
-            )
+              ))}
+            </div>
           )}
         </section>
 

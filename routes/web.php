@@ -81,5 +81,14 @@ Route::post('/productos', [ProductoController::class, 'store']);
 Route::put('/productos/{id}', [ProductoController::class, 'update']);
 Route::delete('/productos/{id}', [ProductoController::class, 'destroy']);
 
+Route::get('/animales', [AnimalController::class, 'index']);
+Route::post('/animales', [AnimalController::class, 'store']);
+Route::put('/animales/{id}', [AnimalController::class, 'update']);
+Route::delete('/animales/{id}', [AnimalController::class, 'destroy']);
+
+Route::get('/animal/crud', function () {
+    return Inertia::render('AnimalCrud');
+});
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
