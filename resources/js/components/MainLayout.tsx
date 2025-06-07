@@ -1,5 +1,5 @@
 import { useCart } from '../context/CartContext';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
@@ -29,8 +29,11 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const { url, props } = usePage<PageProps>();
-  
+  const { clearCart } = useCart();
   const user = props.auth?.user;
+
+  // Referencia para guardar el ID anterior
+  const prevUserId = useRef(user?.id);
 
   const getPlaceholderText = () => {
     switch (url) {
@@ -83,6 +86,13 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (prevUserId.current !== user?.id) {
+      clearCart();
+    }
+    prevUserId.current = user?.id;
+  }, [user?.id, clearCart]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -102,7 +112,7 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
   };
 
   return (
-    <CartProvider>
+    <CartProvider usuario={user}>
       <div className="min-h-screen flex flex-col">
         {/* Navbar */}
         <header
