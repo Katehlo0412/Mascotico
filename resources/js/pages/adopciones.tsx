@@ -38,6 +38,8 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
   const [showForm, setShowForm] = useState<number | null>(null);
   const [formData, setFormData] = useState({ nombre: '', apellidos: '', correo: '', telefono: '' });
   const [showSuccess, setShowSuccess] = useState(false);
+  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
+  const [animalAdoptado, setAnimalAdoptado] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/animales')
@@ -46,6 +48,17 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
         setAnimales(data);
         setLoadingAnimales(false);
       });
+  }, []);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowForm(null);
+        setShowSuccess(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
   const handleBuscar = (e: React.FormEvent) => {
@@ -70,6 +83,14 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const errors: {[key: string]: string} = {};
+    if (!formData.nombre) errors.nombre = 'El nombre es obligatorio';
+    if (!formData.apellidos) errors.apellidos = 'Los apellidos son obligatorios';
+    if (!formData.correo || !/\S+@\S+\.\S+/.test(formData.correo)) errors.correo = 'Correo inválido';
+    if (!formData.telefono || formData.telefono.length < 6) errors.telefono = 'Teléfono inválido';
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+
     const response = await fetch('/solicitud-adopcion', {
       method: 'POST',
       headers: {
@@ -85,9 +106,11 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
     const data = await response.json();
     console.log(data);
     if (data.ok) {
+      const nombreAnimal = animales.find(a => a.id === showForm)?.nombre || '';
+      setAnimalAdoptado(nombreAnimal);
       setShowForm(null);
       setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000); // Oculta el mensaje tras 3s
+      setTimeout(() => setShowSuccess(false), 6000);
     } else {
       alert('Error al enviar la solicitud');
     }
@@ -151,7 +174,10 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
 
         {/* Animales en adopción (buscador y cards de SerpApi) */}
         <section className="p-6">
-          <h2 className="text-2xl font-bold text-yellow-700 mb-6">Animales en adopción</h2>
+          <h2 className="text-2xl font-bold text-yellow-700 mb-2">Animales en adopción</h2>
+          <p className="mb-6 text-gray-700 text-base">
+            Estos son los animales que actualmente tenemos en nuestra clínica y que buscan un hogar. Si quieres cambiar una vida, ¡adopta uno de nuestros peludos!
+          </p>
           {loadingAnimales ? (
             <p>Cargando animales...</p>
           ) : (
@@ -159,7 +185,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
               {animales.map(animal => (
                 <div
                   key={animal.id}
-                  className="flex flex-col items-center bg-white rounded-xl shadow-md p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-transparent hover:border-yellow-500 relative group w-56 mx-auto"
+                  className="flex flex-col items-center bg-white rounded-xl shadow-md p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-transparent hover:border-yellow-500 relative group w-72 mx-auto"
                 >
                   {/* Imagen */}
                   <div className="w-full flex justify-center mb-2">
@@ -180,7 +206,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                   <p className="text-gray-700 text-xs text-center mb-2 line-clamp-2">{animal.descripcion}</p>
                   {/* Botón destacado con animación */}
                   <button
-                    className="bg-yellow-700 hover:bg-yellow-600 text-white px-4 py-1.5 rounded-full mt-auto font-bold flex items-center gap-2 shadow transition-all duration-200 animate-pulse-on-hover"
+                    className="bg-yellow-700 hover:bg-yellow-600 text-white px-4 py-1.5 rounded-full mt-auto font-bold flex items-center gap-2 shadow transition-all duration-200 active:scale-95"
                     onClick={() => handleOpenForm(animal.id)}
                     style={{ fontSize: '0.95rem' }}
                   >
@@ -196,11 +222,11 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
         {/* Formulario de solicitud de adopción */}
         {showForm !== null && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-all duration-300">
-            <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md relative animate-[fadeInModal_0.4s_ease]">
+            <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md relative animate-[fadeInModal_1.6s_ease]">
               <button
                 className="absolute top-3 right-3 text-gray-400 hover:text-yellow-700 text-xl font-bold"
                 onClick={() => setShowForm(null)}
-                aria-label="Cerrar"
+                aria-label="Cerrar formulario"
               >
                 ×
               </button>
@@ -229,6 +255,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                     required
                     className="w-full border rounded px-2 py-1"
                   />
+                  {formErrors.nombre && <p className="text-red-500 text-xs">{formErrors.nombre}</p>}
                 </div>
                 <div className="mb-2">
                   <label className="block text-sm">Tus apellidos</label>
@@ -240,6 +267,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                     required
                     className="w-full border rounded px-2 py-1"
                   />
+                  {formErrors.apellidos && <p className="text-red-500 text-xs mt-1">{formErrors.apellidos}</p>}
                 </div>
                 <div className="mb-2">
                   <label className="block text-sm">Correo electrónico</label>
@@ -251,6 +279,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                     required
                     className="w-full border rounded px-2 py-1"
                   />
+                  {formErrors.correo && <p className="text-red-500 text-xs mt-1">{formErrors.correo}</p>}
                 </div>
                 <div className="mb-2">
                   <label className="block text-sm">Teléfono</label>
@@ -264,6 +293,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                     pattern="[0-9+ ]{6,}"
                     placeholder="Ej: 600123456"
                   />
+                  {formErrors.telefono && <p className="text-red-500 text-xs mt-1">{formErrors.telefono}</p>}
                 </div>
                 <div className="mb-2">
                   <label className="block text-sm">Mensaje adicional</label>
@@ -299,6 +329,9 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                   from { opacity: 0; transform: translateY(30px) scale(0.97);}
                   to { opacity: 1; transform: translateY(0) scale(1);}
                 }
+                .animate-\\[fadeInModal_6s_ease\\] {
+                  animation: fadeInModal 6s ease;
+                }
               `}
             </style>
           </div>
@@ -326,7 +359,10 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                 </svg>
               </span>
               <h2 className="text-2xl font-extrabold text-yellow-700 mb-2 text-center drop-shadow">¡Solicitud enviada!</h2>
-              <p className="text-gray-700 text-center mb-2">Gracias por tu interés en adoptar.<br />Nos pondremos en contacto contigo pronto.</p>
+              <p className="text-gray-700 text-center mb-2">
+                Has solicitado adoptar a <b>{animalAdoptado}</b>.<br />
+                Te contactaremos pronto, <b>{formData.nombre}</b>.
+              </p>
               <div className="absolute top-2 right-4">
                 <button
                   className="text-yellow-400 hover:text-yellow-700 text-2xl font-bold transition-transform duration-200 hover:scale-125"
