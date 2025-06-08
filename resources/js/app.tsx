@@ -15,7 +15,7 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <CartProvider>
+            <CartProvider usuario={props.initialPage?.props?.usuario}>
                 <App {...props} />
             </CartProvider>
         );
