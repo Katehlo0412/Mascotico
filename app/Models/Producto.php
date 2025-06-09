@@ -14,4 +14,9 @@ class Producto extends Model
         'imagen',
         'tipo',
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

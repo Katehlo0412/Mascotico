@@ -1,1 +1,1 @@
-SELECT * FROM mascotico.animals;
+TRUNCATE TABLE mascotico.reviews;

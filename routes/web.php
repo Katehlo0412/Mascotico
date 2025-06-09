@@ -13,6 +13,7 @@ use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\AdopcionController;
 
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ReviewController;
 
 
 Route::get('/', function () {
@@ -89,6 +90,10 @@ Route::delete('/animales/{id}', [AnimalController::class, 'destroy']);
 Route::get('/animal/crud', function () {
     return Inertia::render('AnimalCrud');
 });
+
+Route::get('/productos/{producto}/reviews', [ReviewController::class, 'index']);
+Route::post('/productos/{producto}/reviews', [ReviewController::class, 'store']);
+Route::post('/solicitud-adopcion', [\App\Http\Controllers\SolicitudAdopcionController::class, 'enviar'])->name('solicitud.adopcion');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

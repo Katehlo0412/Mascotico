@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 export interface Producto {
   id: number;
@@ -25,17 +25,38 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
- 
+const getCartKey = (userId?: number) => `cart_${userId ?? 'anonimo'}`;
+
+export const CartProvider = ({ children, usuario }: { children: React.ReactNode, usuario: any }) => {
   const [cart, setCart] = useState<CartItem[]>(() => {
-    const stored = sessionStorage.getItem('cart');
+    const key = getCartKey(usuario?.id);
+    const stored = sessionStorage.getItem(key);
     return stored ? JSON.parse(stored) : [];
   });
+  const prevUserId = useRef(usuario?.id);
 
-  
+  const clearCart = () => setCart([]);
+
+  // Efecto para limpiar el carrito solo cuando cambia el usuario
   useEffect(() => {
-    sessionStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+    if (prevUserId.current !== usuario?.id) {
+      clearCart();
+    }
+    prevUserId.current = usuario?.id;
+  }, [usuario?.id]);
+
+  useEffect(() => {
+    const key = getCartKey(usuario?.id);
+    const stored = sessionStorage.getItem(key);
+    setCart(stored ? JSON.parse(stored) : []);
+    prevUserId.current = usuario?.id;
+    // No necesitas llamar a clearCart aquí, solo cargar el carrito correcto
+  }, [usuario?.id]);
+
+  useEffect(() => {
+    const key = getCartKey(usuario?.id);
+    sessionStorage.setItem(key, JSON.stringify(cart));
+  }, [cart, usuario?.id]);
 
   const addToCart = (producto: Producto) => {
     setCart(prev => {
@@ -54,8 +75,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const removeFromCart = (id: number) => {
     setCart(prev => prev.filter(item => item.id !== id));
   };
-
-  const clearCart = () => setCart([]);
 
   const updateQuantity = (id: number, cantidad: number) => {
     setCart(prev =>

@@ -58,9 +58,9 @@ const Footer = () => {
           <div className="text-center md:text-left">
             <h3 className="text-[#DAA520] font-semibold text-sm mb-1">Contacto</h3>
             <div className="space-y-1">
-              <p className="text-gray-600 text-xs">📞 +34 123 456 789</p>
-              <p className="text-gray-600 text-xs">✉️ info@mascotico.com</p>
-              <p className="text-gray-600 text-xs">📍 Calle Principal 123, Madrid</p>
+              <p className="text-gray-600 text-xs">📞 +34 644 22 14 82</p>
+              <p className="text-gray-600 text-xs">✉️ mascoticocontacto@gmail.com</p>
+              <p className="text-gray-600 text-xs">📍 Rda. de Garay, 14, 30003 Murcia</p>
             </div>
           </div>
 

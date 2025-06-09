@@ -44,8 +44,15 @@ export default function ProductoPage(props: any) {
   const [descuento, setDescuento] = useState(0);
   const [errorCodigo, setErrorCodigo] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [comentario, setComentario] = useState('');
+  const [puntuacion, setPuntuacion] = useState(5);
+  const [hoverPuntuacion, setHoverPuntuacion] = useState<number | null>(null);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [mensajeLogin, setMensajeLogin] = useState('');
+  const usuario = { nombre: "Cliente" };
   const CODIGO_VALIDO = 'MASCOTICO10';
-  const PORCENTAJE_DESCUENTO = 10; // 10%
+  const PORCENTAJE_DESCUENTO = 10;
 
   useEffect(() => {
     if (id) {
@@ -54,6 +61,14 @@ export default function ProductoPage(props: any) {
         .then(setProducto);
     }
   }, [id]);
+
+  useEffect(() => {
+    if (producto) {
+      fetch(`/productos/${producto.id}/reviews`)
+        .then(res => res.json())
+        .then(setReviews);
+    }
+  }, [producto]);
 
   if (!id) return <p>Error: No se recibió el ID del producto.</p>;
   if (!producto) {
@@ -216,7 +231,7 @@ export default function ProductoPage(props: any) {
                   >
                     <span className="flex items-center gap-1">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2l4 -4" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2l4-4" />
                       </svg>
                       Aplicar
                     </span>
@@ -242,13 +257,153 @@ export default function ProductoPage(props: any) {
           </div>
         </div>
 
-        {/* Descripción extendida */}
-        <div className="max-w-6xl mx-auto mt-10 p-6 bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-xl shadow-xl border-2 border-yellow-200/50 space-y-4 animate-fade-in">
-          <h2 className="text-2xl font-bold text-yellow-700 flex items-center gap-2">
-            <span className="text-2xl">📋</span>
-            Descripción
-          </h2>
-          <p className="text-gray-800 whitespace-pre-line leading-relaxed text-lg">{producto.descripcion}</p>
+        {/* Descripción bonita (de AvanceFrontend3) */}
+<div className="max-w-6xl mx-auto mt-10 p-6 bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-xl shadow-xl border-2 border-yellow-200/50 space-y-4 animate-fade-in">
+  <h2 className="text-2xl font-bold text-yellow-700 flex items-center gap-2">
+    <span className="text-2xl">📋</span>
+    Descripción
+  </h2>
+  <p className="text-gray-800 whitespace-pre-line leading-relaxed text-lg">{producto.descripcion}</p>
+</div>
+
+        {/* Reseñas de clientes */}
+        <div className="max-w-6xl mx-auto mt-10 p-6 bg-gray-100 rounded-xl shadow space-y-4 animate-fade-in">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Reseñas de clientes</h2>
+          {reviews.length === 0 ? (
+            <p className="text-gray-700">Aún no hay reseñas.</p>
+          ) : (
+            <ul className="space-y-4">
+              {reviews.map((r, i) => (
+                <li key={i} className="border-b pb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-orange-700">{r.usuario}</span>
+                    <span className="text-xs text-gray-500">
+                      {r.created_at ? new Date(r.created_at).toLocaleDateString() : ''}
+                    </span>
+                    <span className="flex">
+                      {[...Array(5)].map((_, idx) => (
+                        <svg
+                          key={idx}
+                          className={`w-5 h-5 ${idx < r.puntuacion ? 'text-yellow-400' : 'text-gray-300'}`}
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.38-2.454a1 1 0 00-1.175 0l-3.38 2.454c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
+                        </svg>
+                      ))}
+                    </span>
+                  </div>
+                  <p className="text-gray-900">{r.comentario || r.mensaje || r.texto || ''}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Formulario para agregar reseña */}
+          {usuario ? (
+            <form
+              className="mt-6 space-y-2"
+              onSubmit={e => {
+                e.preventDefault();
+                if (!usuario) {
+                  setMensajeLogin('Debes iniciar sesión o registrarte para dejar una reseña.');
+                  return;
+                }
+                setMensajeLogin('');
+                fetch(`/productos/${producto.id}/reviews`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                  },
+                  credentials: 'same-origin',
+                  body: JSON.stringify({
+                    comentario,
+                    puntuacion,
+                  }),
+                })
+                  .then(res => {
+                    if (!res.ok) {
+                      if (res.status === 401) setMensajeLogin('Debes iniciar sesión o registrarte para dejar una reseña.');
+                      throw new Error('Error al enviar la reseña');
+                    }
+                    return res.json();
+                  })
+                  .then(nueva => {
+                    setReviews([...reviews, nueva]);
+                    setComentario('');
+                    setPuntuacion(5);
+                  });
+              }}
+            >
+              <label className="block font-semibold text-gray-900">Tu reseña:</label>
+              <textarea
+                className="w-full border border-gray-400 rounded p-2 text-gray-900 bg-white"
+                value={comentario}
+                onChange={e => setComentario(e.target.value)}
+                required
+                placeholder="Escribe tu opinión aquí..."
+                style={{ minHeight: 60 }}
+              />
+              <div className="flex items-center gap-2">
+                <label className="text-gray-900">Puntuación:</label>
+                <div className="flex">
+                  {[1,2,3,4,5].map(n => (
+                    <button
+                      type="button"
+                      key={n}
+                      onClick={() => setPuntuacion(n)}
+                      onMouseEnter={() => setHoverPuntuacion(n)}
+                      onMouseLeave={() => setHoverPuntuacion(null)}
+                      className="focus:outline-none"
+                      tabIndex={-1}
+                      aria-label={`${n} estrellas`}
+                    >
+                      <svg
+                        className={`w-7 h-7 ${n <= (hoverPuntuacion ?? puntuacion) ? 'text-yellow-400' : 'text-gray-300'} transition-colors`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.38-2.454a1 1 0 00-1.175 0l-3.38 2.454c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
+                      </svg>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="bg-orange-600 text-white px-4 py-2 rounded font-bold hover:bg-orange-700"
+              >
+                Enviar reseña
+              </button>
+              {mensajeLogin && (
+                <p className="text-red-600 text-sm mt-2">{mensajeLogin}</p>
+              )}
+            </form>
+          ) : (
+            <>
+              <button
+                className="bg-orange-600 text-white px-4 py-2 rounded font-bold hover:bg-orange-700"
+                onClick={() => setShowLoginPopup(true)}
+              >
+                Escribe una reseña
+              </button>
+              {showLoginPopup && (
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
+                  <div className="bg-white p-6 rounded-xl shadow-xl flex flex-col items-center">
+                    <p className="text-lg font-semibold text-gray-800 mb-2">Debes iniciar sesión para dejar una reseña.</p>
+                    <button
+                      className="mt-2 bg-orange-600 text-white px-4 py-2 rounded font-bold hover:bg-orange-700"
+                      onClick={() => setShowLoginPopup(false)}
+                    >
+                      Cerrar
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
         </div>
 
         {/* Anuncio */}
