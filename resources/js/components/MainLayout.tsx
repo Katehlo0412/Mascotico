@@ -6,6 +6,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Footer from './Footer';
 import { CartProvider } from '../context/CartContext';
 import UserActions from './UserActions';
+import { PublicidadFalsa } from '@/components/PublicidadFalsa';
 
 
 interface MainLayoutProps {
@@ -193,6 +194,7 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
         {/* Main content */}
         <main className="flex-grow">
           {children}
+          <PublicidadFalsa tipoAleatorio />
         </main>
 
         {/* Footer */}
