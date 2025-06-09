@@ -91,7 +91,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
           </button>
           
           <img
-            src="/images/adopta3.webp"
+            src="/images/adoptionsPrincipal-optimizada2.avif"
             alt="Adopción portada"
             className="absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700"
             style={{ opacity: heroLoaded ? 1 : 0, pointerEvents: 'none' }}

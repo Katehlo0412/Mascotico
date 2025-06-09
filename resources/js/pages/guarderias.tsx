@@ -35,7 +35,7 @@ const articulosGuarderias: ArticuloGuarderia[] = [
         titulo: "Cómo elegir la guardería perfecta para tu mascota",
         fecha: "18/07/2024",
         categoria: ["Consejos", "Guardería", "Bienestar"],
-        imagen: "/images/blog/elegir-guarderia.jpg",
+        imagen: "/images/guarderiagatos6.jpg",
         descripcion: "Guía completa con los factores clave que debes considerar al seleccionar una guardería para tu mascota."
     },
     {
@@ -43,12 +43,16 @@ const articulosGuarderias: ArticuloGuarderia[] = [
         titulo: "Preparando a tu perro para su primera estancia",
         fecha: "15/07/2024",
         categoria: ["Consejos", "Perros", "Adaptación"],
-        imagen: "/images/blog/primera-estancia.jpg",
+        imagen: "/images/guarderia8.jpg",
         descripcion: "Tips esenciales para que tu perro se sienta cómodo y seguro en su primera experiencia en guardería."
     }
 ];
 
 const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
+    
+    const scrollToBuscador = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     const containerClasses = ubicacion && resultados.length > 0
         ? "w-[95%] max-w-[95%] px-4 py-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg mx-auto"
         : "w-full max-w-4xl px-4 py-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg mt-45 ml-1 mr-8";
@@ -59,10 +63,10 @@ const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                 className="relative w-full bg-no-repeat bg-cover bg-center pb-8"
                 style={{ 
                     backgroundImage: "url('/images/guarderias.webp')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center top',
-                    backgroundAttachment: 'fixed',
-                    minHeight: '100vh'
+                    backgroundSize: '130% 100%',
+                    backgroundPosition: '10% top',
+                    minHeight: '100vh',
+                    height: '100%'
                 }}
             >
                 {ubicacion && resultados.length > 0 ? (
@@ -115,28 +119,56 @@ const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                         </button>
                                     )}
                                     <h1 className="text-3xl font-bold text-yellow-700 mb-2 drop-shadow-md">Residencias y Guarderías de Mascotas</h1>
-                                    <p className="text-gray-800 text-left font-medium">
-                                        Utiliza el buscador superior para encontrar guarderías por ubicación.
-                                    </p>
+                                    <>
+                                        <p className="text-gray-800 text-left font-medium mb-4">
+                                            Busca residencias y guarderías de mascotas cerca de tu ubicación:
+                                        </p>
+                                        {/* Buscador local */}
+                                        <form 
+                                            onSubmit={(e) => {
+                                                e.preventDefault();
+                                                const formData = new FormData(e.currentTarget);
+                                                const ubicacion = formData.get('ubicacion') as string;
+                                                if (ubicacion.trim()) {
+                                                    window.location.href = `/guarderias?ubicacion=${encodeURIComponent(ubicacion)}`;
+                                                }
+                                            }}
+                                            className="flex gap-2 mt-2"
+                                        >
+                                            <input
+                                                type="text"
+                                                name="ubicacion"
+                                                placeholder="Ej: Murcia, Madrid, Barcelona..."
+                                                className="flex-1 px-4 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:border-yellow-500 bg-white/90"
+                                                required
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium"
+                                            >
+                                                Buscar
+                                            </button>
+                                        </form>
+                                    </>
                                 </div>
                             </div>
 
                             {/* Sección de artículos sobre guarderías */}
                             <div className="mt-12 w-full">
                                 {/* Artículos principales */}
-                                <div className="w-[65%] pl-2">
+                                <div className="w-[55%] pl-2">
                                     <div className="inline-block bg-white/70 backdrop-blur-sm rounded-lg px-4 py-2 mb-4">
                                         <h2 className="text-xl font-bold text-yellow-700">Guía Completa sobre Guarderías</h2>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 border-2 border-gray-400/60 rounded-xl bg-gray-100">
                                         {articulosGuarderias.map((articulo) => (
                                             <div key={articulo.id} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
                                                 <img 
                                                     src={articulo.imagen} 
                                                     alt={articulo.titulo}
-                                                    className="w-full h-40 object-cover"
+                                                    className="w-full h-32 object-cover"
                                                 />
-                                                <div className="p-4">
+                                                <div className="p-3">
                                                     <div className="flex flex-wrap gap-1 mb-2">
                                                         {articulo.categoria.map((cat, index) => (
                                                             <span 
@@ -147,10 +179,10 @@ const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                                             </span>
                                                         ))}
                                                     </div>
-                                                    <h3 className="text-base font-semibold mb-2 text-gray-800">
+                                                    <h3 className="text-sm font-semibold mb-1 text-gray-800">
                                                         {articulo.titulo}
                                                     </h3>
-                                                    <p className="text-gray-600 text-sm mb-3">
+                                                    <p className="text-gray-600 text-xs mb-2">
                                                         {articulo.descripcion}
                                                     </p>
                                                     <div className="flex justify-between items-center">
@@ -212,7 +244,7 @@ const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1605460375648-278bcbd579a6?w=200"
+                                                        src="/images/juguetes interactivos.jpg"
                                                         alt="Juguetes Interactivos"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -229,7 +261,7 @@ const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1554475901-e2ce1a3f857e?w=200"
+                                                        src="/images/transportin.jpg"
                                                         alt="Transportín de Seguridad"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -246,7 +278,7 @@ const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1581888227599-779811939961?w=200"
+                                                        src="/images/higiene-dental.jpg"
                                                         alt="Kit de Higiene Completo"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -267,7 +299,10 @@ const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                                 <h4 className="text-base font-bold mb-1">🏠 ¿Buscas la Guardería Perfecta?</h4>
                                                 <p className="text-sm">Te ayudamos a encontrar el lugar ideal para tu mascota</p>
                                             </div>
-                                            <button className="bg-white text-[#DAA520] px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-all duration-200 shadow-lg border border-[#DAA520]/20 text-sm">
+                                            <button 
+                                                onClick={scrollToBuscador}
+                                                className="bg-white text-[#DAA520] px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-all duration-200 shadow-lg border border-[#DAA520]/20 text-sm"
+                                            >
                                                 Buscar Guarderías
                                             </button>
                                         </div>

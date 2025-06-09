@@ -35,7 +35,7 @@ const articulosPeluquerias: ArticuloPeluqueria[] = [
         titulo: "Cuidado del pelaje según la raza de tu mascota",
         fecha: "22/07/2024",
         categoria: ["Grooming", "Cuidado", "Pelaje"],
-        imagen: "/images/blog/cuidado-pelaje.jpg",
+        imagen: "/images/peluqueria5.webp",
         descripcion: "Aprende las técnicas específicas de cuidado del pelaje para diferentes razas y tipos de pelo."
     },
     {
@@ -43,12 +43,16 @@ const articulosPeluquerias: ArticuloPeluqueria[] = [
         titulo: "Cómo bañar a tu perro en casa correctamente",
         fecha: "19/07/2024",
         categoria: ["Higiene", "Baño", "Consejos"],
-        imagen: "/images/blog/bano-perro.jpg",
+        imagen: "/images/perro baño1.jpg",
         descripcion: "Guía paso a paso para bañar a tu mascota de manera segura y efectiva en el hogar."
     }
 ];
 
 const Peluquerias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
+    const scrollToBuscador = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const containerClasses = ubicacion && resultados.length > 0
         ? "w-[95%] max-w-[95%] px-4 py-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg mx-auto"
         : "w-full max-w-4xl px-4 py-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg mt-45 ml-1 mr-8";
@@ -114,9 +118,37 @@ const Peluquerias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }
                                         </button>
                                     )}
                                     <h1 className="text-3xl font-bold text-yellow-700 mb-2 drop-shadow-md">Peluquerías de Mascotas</h1>
-                                    <p className="text-gray-800 text-left font-medium">
-                                        Utiliza el buscador superior para encontrar peluquerías por ubicación.
-                                    </p>
+                                    <>
+                                        <p className="text-gray-800 text-left font-medium mb-4">
+                                            Busca peluquerías de mascotas cerca de tu ubicación:
+                                        </p>
+                                        {/* Buscador local */}
+                                        <form 
+                                            onSubmit={(e) => {
+                                                e.preventDefault();
+                                                const formData = new FormData(e.currentTarget);
+                                                const ubicacion = formData.get('ubicacion') as string;
+                                                if (ubicacion.trim()) {
+                                                    window.location.href = `/peluquerias?ubicacion=${encodeURIComponent(ubicacion)}`;
+                                                }
+                                            }}
+                                            className="flex gap-2 mt-2"
+                                        >
+                                            <input
+                                                type="text"
+                                                name="ubicacion"
+                                                placeholder="Ej: Murcia, Madrid, Barcelona..."
+                                                className="flex-1 px-4 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:border-yellow-500 bg-white/90"
+                                                required
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium"
+                                            >
+                                                Buscar
+                                            </button>
+                                        </form>
+                                    </>
                                 </div>
                             </div>
 
@@ -177,7 +209,7 @@ const Peluquerias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1607334763441-a7247a3dae77?w=200"
+                                                        src="/images/champu hipo.jpg"
                                                         alt="Champú Hipoalergénico"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -194,7 +226,7 @@ const Peluquerias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1581888227599-779811939961?w=200"
+                                                        src="/images/cepillo.webp"
                                                         alt="Cepillo Desenredante"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -211,7 +243,7 @@ const Peluquerias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?w=200"
+                                                        src="/images/peluqueria4.jpg"
                                                         alt="Cortauñas Profesional"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -228,7 +260,7 @@ const Peluquerias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200"
+                                                        src="/images/secador de pelo.avif"
                                                         alt="Secador de Pelo Canino"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -245,7 +277,7 @@ const Peluquerias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1591769225440-811ad7d6eab3?w=200"
+                                                        src="/images/higiene-dental.jpg"
                                                         alt="Kit Limpieza Dental"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -266,7 +298,10 @@ const Peluquerias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }
                                                 <h4 className="text-base font-bold mb-1">✂️ ¿Tu Mascota Necesita un Corte?</h4>
                                                 <p className="text-sm">Encuentra las mejores peluquerías cerca de ti</p>
                                             </div>
-                                            <button className="bg-white text-[#DAA520] px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-all duration-200 shadow-lg border border-[#DAA520]/20 text-sm">
+                                            <button 
+                                                onClick={scrollToBuscador}
+                                                className="bg-white text-[#DAA520] px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-all duration-200 shadow-lg border border-[#DAA520]/20 text-sm"
+                                            >
                                                 Buscar Peluquerías
                                             </button>
                                         </div>

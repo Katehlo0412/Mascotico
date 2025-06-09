@@ -35,7 +35,7 @@ const articulosEntrenamientos: ArticuloEntrenamiento[] = [
         titulo: "Técnicas básicas de entrenamiento positivo",
         fecha: "20/07/2024",
         categoria: ["Entrenamiento", "Técnicas", "Refuerzo Positivo"],
-        imagen: "/images/blog/entrenamiento-positivo.jpg",
+        imagen: "/images/adiestramiento-basico-perros.jpg",
         descripcion: "Aprende las técnicas fundamentales del entrenamiento con refuerzo positivo para educar a tu perro de manera efectiva."
     },
     {
@@ -43,12 +43,16 @@ const articulosEntrenamientos: ArticuloEntrenamiento[] = [
         titulo: "Cómo enseñar comandos básicos a tu cachorro",
         fecha: "18/07/2024",
         categoria: ["Cachorros", "Comandos", "Educación"],
-        imagen: "/images/blog/comandos-basicos.jpg",
+        imagen: "/images/adiestrar cachorro.jpg",
         descripcion: "Guía paso a paso para enseñar los comandos esenciales: sentado, quieto, ven aquí y caminar con correa."
     }
 ];
 
 const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
+    
+    const scrollToBuscador = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     const containerClasses = ubicacion && resultados.length > 0
         ? "w-[95%] max-w-[95%] px-4 py-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg mx-auto"
         : "w-full max-w-4xl px-4 py-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg mt-45 ml-1 mr-8";
@@ -60,7 +64,7 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                 style={{ 
                     backgroundImage: "url('/images/entrenamiento3.webp')",
                     backgroundSize: 'cover',
-                    backgroundPosition: 'right top',
+                    backgroundPosition: '70% top',
                     backgroundAttachment: 'fixed',
                 }}
             >
@@ -114,28 +118,57 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                                         </button>
                                     )}
                                     <h1 className="text-3xl font-bold text-yellow-700 mb-2 drop-shadow-md">Entrenamientos Caninos</h1>
-                                    <p className="text-gray-800 text-left font-medium">
-                                        Utiliza el buscador superior para encontrar entrenadores por ubicación.
-                                    </p>
+                                    <>
+                                        <p className="text-gray-800 text-left font-medium mb-4">
+                                            Busca entrenadores caninos cerca de tu ubicación:
+                                        </p>
+                                        {/* Buscador local */}
+                                        <form 
+                                            onSubmit={(e) => {
+                                                e.preventDefault();
+                                                const formData = new FormData(e.currentTarget);
+                                                const ubicacion = formData.get('ubicacion') as string;
+                                                if (ubicacion.trim()) {
+                                                    window.location.href = `/entrenamientos?ubicacion=${encodeURIComponent(ubicacion)}`;
+                                                }
+                                            }}
+                                            className="flex flex-col sm:flex-row gap-2 mt-2"
+                                        >
+                                            <input
+                                                type="text"
+                                                name="ubicacion"
+                                                placeholder="Ej: Madrid, Barcelona, Valencia..."
+                                                className="flex-1 px-4 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                                required
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="px-6 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 font-medium flex items-center gap-2 shadow-lg"
+                                            >
+                                                <span>🔍</span>
+                                                <span>Buscar</span>
+                                            </button>
+                                        </form>
+                                    </>
                                 </div>
                             </div>
 
                             {/* Sección de artículos sobre entrenamiento */}
                             <div className="mt-12 w-full">
                                 {/* Artículos principales */}
-                                <div className="w-[65%] pl-2">
+                                <div className="w-[55%] pl-2">
                                     <div className="inline-block bg-white/70 backdrop-blur-sm rounded-lg px-4 py-2 mb-4">
                                         <h2 className="text-xl font-bold text-yellow-700">Guía de Entrenamiento Canino</h2>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         {articulosEntrenamientos.map((articulo) => (
                                             <div key={articulo.id} className="bg-white/60 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
                                                 <img 
                                                     src={articulo.imagen} 
                                                     alt={articulo.titulo}
-                                                    className="w-full h-40 object-cover"
+                                                    className={`w-full h-32 object-cover ${articulo.imagen.includes('adiestrar cachorro') ? 'object-[center_30%]' : ''}`}
                                                 />
-                                                <div className="p-4">
+                                                <div className="p-3">
                                                     <div className="flex flex-wrap gap-1 mb-2">
                                                         {articulo.categoria.map((cat, index) => (
                                                             <span 
@@ -146,10 +179,10 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                                                             </span>
                                                         ))}
                                                     </div>
-                                                    <h3 className="text-base font-semibold mb-2 text-gray-800">
+                                                    <h3 className="text-sm font-semibold mb-1 text-gray-800">
                                                         {articulo.titulo}
                                                     </h3>
-                                                    <p className="text-gray-600 text-sm mb-3">
+                                                    <p className="text-gray-600 text-xs mb-2">
                                                         {articulo.descripcion}
                                                     </p>
                                                     <div className="flex justify-between items-center">
@@ -177,7 +210,7 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=200"
+                                                        src="/images/cliker de entrenamiento.jpg"
                                                         alt="Clicker de Entrenamiento"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -194,7 +227,7 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1605460375648-278bcbd579a6?w=200"
+                                                        src="/images/juguetes-gatos.webp"
                                                         alt="Juguetes Interactivos"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -211,7 +244,7 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1553688738-a278b9f063e5?w=200"
+                                                        src="/images/arnes de adiestramiento3.jpg"
                                                         alt="Correa de Entrenamiento"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -228,7 +261,7 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1591769225440-811ad7d6eab3?w=200"
+                                                        src="/images/premios gatos.jpeg"
                                                         alt="Premios Naturales"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -245,9 +278,9 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200"
+                                                        src="/images/arnes de adiestramiento1.jpg"
                                                         alt="Arnés de Adiestramiento"
-                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                        className="w-full h-full object-cover object-[center_30%] group-hover:scale-110 transition-transform duration-300"
                                                     />
                                                     <div className="absolute top-1 right-1 bg-[#DAA520] text-white text-xs px-2 py-1 rounded">
                                                         AD
@@ -266,7 +299,10 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                                                 <h4 className="text-base font-bold mb-1">🎓 ¿Necesitas Ayuda con el Entrenamiento?</h4>
                                                 <p className="text-sm">Encuentra entrenadores profesionales cerca de ti</p>
                                             </div>
-                                            <button className="bg-white text-[#DAA520] px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-all duration-200 shadow-lg border border-[#DAA520]/20 text-sm">
+                                            <button 
+                                                onClick={scrollToBuscador}
+                                                className="bg-white text-[#DAA520] px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-all duration-200 shadow-lg border border-[#DAA520]/20 text-sm"
+                                            >
                                                 Buscar Entrenadores
                                             </button>
                                         </div>

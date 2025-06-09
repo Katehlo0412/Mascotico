@@ -36,7 +36,7 @@ const articulosVeterinarios: ArticuloVeterinario[] = [
         titulo: "Cuidados básicos para tu mascota en verano",
         fecha: "15/07/2024",
         categoria: ["Cuidados y salud", "Perros", "Gatos"],
-        imagen: "/images/blog/cuidados-verano.jpg",
+        imagen: "/images/perro verano.jpg",
         descripcion: "Consejos esenciales para proteger a tu mascota del calor y mantenerla saludable durante el verano."
     },
     {
@@ -44,7 +44,7 @@ const articulosVeterinarios: ArticuloVeterinario[] = [
         titulo: "Vacunas esenciales para tu perro",
         fecha: "10/07/2024",
         categoria: ["Cuidados y salud", "Perros"],
-        imagen: "/images/blog/vacunas-perros.jpg",
+        imagen: "/images/vacunas perros.webp",
         descripcion: "Guía completa sobre las vacunas necesarias para mantener a tu perro protegido contra enfermedades comunes."
     },
     {
@@ -52,7 +52,7 @@ const articulosVeterinarios: ArticuloVeterinario[] = [
         titulo: "Señales de emergencia veterinaria",
         fecha: "05/07/2024",
         categoria: ["Cuidados y salud", "Perros", "Gatos"],
-        imagen: "/images/blog/emergencias.jpg",
+        imagen: "/images/emergencias gato.jpg",
         descripcion: "Aprende a reconocer los signos que indican que tu mascota necesita atención veterinaria urgente."
     },
     {
@@ -60,13 +60,17 @@ const articulosVeterinarios: ArticuloVeterinario[] = [
         titulo: "Nutrición y alimentación saludable",
         fecha: "01/07/2024",
         categoria: ["Cuidados y salud", "Perros", "Gatos"],
-        imagen: "/images/blog/nutricion-mascotas.jpg",
+        imagen: "/images/nutricion-veterinaria.jpg",
         descripcion: "Descubre las claves para una alimentación equilibrada y los mejores consejos nutricionales para tu mascota."
     }
 ];
 
 const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
     const [bgLoaded, setBgLoaded] = useState(false);
+
+    const scrollToBuscador = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
         <MainLayout>
@@ -116,9 +120,37 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                                     </button>
                                 )}
                                 {!ubicacion && (
-                                    <p className="text-gray-700 text-left">
-                                        Utiliza el buscador superior para encontrar veterinarias por ubicación.
-                                    </p>
+                                    <>
+                                        <p className="text-gray-700 text-left mb-4">
+                                            Busca veterinarias cerca de tu ubicación:
+                                        </p>
+                                        {/* Buscador local */}
+                                        <form 
+                                            onSubmit={(e) => {
+                                                e.preventDefault();
+                                                const formData = new FormData(e.currentTarget);
+                                                const ubicacion = formData.get('ubicacion') as string;
+                                                if (ubicacion.trim()) {
+                                                    window.location.href = `/veterinarios?ubicacion=${encodeURIComponent(ubicacion)}`;
+                                                }
+                                            }}
+                                            className="flex gap-2 mt-2"
+                                        >
+                                            <input
+                                                type="text"
+                                                name="ubicacion"
+                                                placeholder="Ej: Murcia, Madrid, Barcelona..."
+                                                className="flex-1 px-4 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:border-yellow-500 bg-white/90"
+                                                required
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium"
+                                            >
+                                                Buscar
+                                            </button>
+                                        </form>
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -204,7 +236,12 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
 
                                 {/* Productos veterinarios horizontales */}
                                 <div className="mt-12 bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg">
-                                    <h3 className="font-bold text-2xl mb-6 text-yellow-700 text-center">Productos Veterinarios Recomendados</h3>
+                                    <div className="flex justify-center mb-8">
+                                        <h3 className="text-4xl font-bold bg-gradient-to-r from-[#DAA520] to-orange-500 bg-clip-text text-transparent text-center px-6 py-2 relative">
+                                            🩺 Productos Veterinarios Recomendados 🩺
+                                            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-[#DAA520] to-orange-500 rounded-full"></div>
+                                        </h3>
+                                    </div>
                                     
                                     {/* Grid horizontal de productos */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
@@ -212,7 +249,7 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1607334763441-a7247a3dae77?w=200"
+                                                        src="/images/shampoo2.jpg"
                                                         alt="Shampoo Medicinal Antipulgas"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -229,9 +266,9 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1591769225440-811ad7d6eab3?w=200"
+                                                        src="/images/vitaminas.jpg"
                                                         alt="Vitaminas y Suplementos"
-                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                        className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
                                                     />
                                                     <div className="absolute top-1 right-1 bg-[#DAA520] text-white text-xs px-2 py-1 rounded">
                                                         AD
@@ -246,9 +283,9 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200"
+                                                        src="/images/termometro2.jpg"
                                                         alt="Termómetro Digital Veterinario"
-                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                        className="w-full h-full object-cover object-bottom group-hover:scale-110 transition-transform duration-300"
                                                     />
                                                     <div className="absolute top-1 right-1 bg-[#DAA520] text-white text-xs px-2 py-1 rounded">
                                                         AD
@@ -263,7 +300,7 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?w=200"
+                                                        src="/images/primeros auxilios.png"
                                                         alt="Kit Primeros Auxilios Mascotas"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -280,7 +317,7 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1553688738-a278b9f063e5?w=200"
+                                                        src="/images/antipulgas.jpg"
                                                         alt="Collar Antipulgas Natural"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -301,7 +338,10 @@ const Veterinarios: React.FC<Props> = ({ resultados = [], error, ubicacion = '' 
                                                 <h4 className="text-xl font-bold mb-2">🏥 ¿Necesitas Consulta Veterinaria?</h4>
                                                 <p className="text-lg">Resuelve tus dudas sobre la salud de tu mascota con nuestros expertos</p>
                                             </div>
-                                            <button className="bg-white text-yellow-600 px-8 py-3 rounded-lg font-bold hover:scale-105 transition-all duration-200 shadow-lg">
+                                            <button 
+                                                onClick={scrollToBuscador}
+                                                className="bg-white text-yellow-600 px-8 py-3 rounded-lg font-bold hover:scale-105 transition-all duration-200 shadow-lg"
+                                            >
                                                 Consultar Ahora
                                             </button>
                                         </div>
