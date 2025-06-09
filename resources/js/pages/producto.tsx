@@ -121,6 +121,24 @@ export default function ProductoPage(props: any) {
       )}
 
       <div className="bg-gray-50 min-h-screen py-10 px-4 md:px-16">
+        {/* Botones de navegación */}
+        <div className="max-w-6xl mx-auto mb-6 flex gap-4">
+          <a 
+            href="/"
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+          >
+            <span className="text-lg">🏠</span>
+            <span>Volver a Inicio</span>
+          </a>
+          <a 
+            href="/tienda"
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+          >
+            <span className="text-lg">🛒</span>
+            <span>Ver más productos</span>
+          </a>
+        </div>
+
         <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl flex flex-col md:flex-row overflow-hidden">
           {/* Galería de imagen */}
           <div className="md:w-1/2 p-8 flex flex-col items-center justify-center bg-gradient-to-br from-yellow-50 to-yellow-100">
@@ -239,11 +257,14 @@ export default function ProductoPage(props: any) {
           </div>
         </div>
 
-        {/* Descripción extendida */}
-        <div className="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-xl shadow space-y-4 animate-fade-in">
-          <h2 className="text-xl font-semibold text-gray-800">Descripción</h2>
-          <p className="text-gray-800 whitespace-pre-line">{producto.descripcion}</p>
-        </div>
+        {/* Descripción bonita (de AvanceFrontend3) */}
+<div className="max-w-6xl mx-auto mt-10 p-6 bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-xl shadow-xl border-2 border-yellow-200/50 space-y-4 animate-fade-in">
+  <h2 className="text-2xl font-bold text-yellow-700 flex items-center gap-2">
+    <span className="text-2xl">📋</span>
+    Descripción
+  </h2>
+  <p className="text-gray-800 whitespace-pre-line leading-relaxed text-lg">{producto.descripcion}</p>
+</div>
 
         {/* Reseñas de clientes */}
         <div className="max-w-6xl mx-auto mt-10 p-6 bg-gray-100 rounded-xl shadow space-y-4 animate-fade-in">
@@ -382,6 +403,7 @@ export default function ProductoPage(props: any) {
               )}
             </>
           )}
+
         </div>
 
         {/* Anuncio */}

@@ -35,7 +35,7 @@ const articulosPaseadores: ArticuloPaseador[] = [
         titulo: "Ejercicio seguro para tu perro en diferentes etapas",
         fecha: "25/07/2024",
         categoria: ["Ejercicio", "Salud", "Paseos"],
-        imagen: "/images/blog/ejercicio-seguro.jpg",
+        imagen: "/images/ejercicios2.jpg",
         descripcion: "Aprende cuánto ejercicio necesita tu perro según su edad, raza y condición física para mantenerlo saludable."
     },
     {
@@ -43,12 +43,16 @@ const articulosPaseadores: ArticuloPaseador[] = [
         titulo: "Consejos para paseos seguros en la ciudad",
         fecha: "23/07/2024",
         categoria: ["Seguridad", "Paseos", "Ciudad"],
-        imagen: "/images/blog/paseos-ciudad.jpg",
+        imagen: "/images/paseadores.webp",
         descripcion: "Guía esencial para pasear a tu perro de manera segura en entornos urbanos y evitar riesgos comunes."
     }
 ];
 
 const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) => {
+    const scrollToBuscador = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const containerClasses = ubicacion && resultados.length > 0
         ? "w-[95%] max-w-[95%] px-4 py-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg mx-auto"
         : "w-full max-w-4xl px-4 py-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg mt-45 ml-1 mr-8";
@@ -58,7 +62,7 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
             <div
                 className="relative min-h-screen w-full bg-no-repeat bg-cover bg-center pb-8"
                 style={{ 
-                    backgroundImage: "url('/images/paseadores2.webp')",
+                    backgroundImage: "url('/images/paseadores2-optimizada.avif')",
                     backgroundSize: 'cover',
                     backgroundPosition: 'right top',
                     backgroundAttachment: 'fixed',
@@ -114,9 +118,38 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                         </button>
                                     )}
                                     <h1 className="text-3xl font-bold text-yellow-700 mb-2 drop-shadow-md">Paseadores de Perros</h1>
-                                    <p className="text-gray-800 text-left font-medium">
-                                        Utiliza el buscador superior para encontrar paseadores por ubicación.
-                                    </p>
+                                    <>
+                                        <p className="text-gray-800 text-left font-medium mb-4">
+                                            Busca paseadores de perros cerca de tu ubicación:
+                                        </p>
+                                        {/* Buscador local */}
+                                        <form 
+                                            onSubmit={(e) => {
+                                                e.preventDefault();
+                                                const formData = new FormData(e.currentTarget);
+                                                const ubicacion = formData.get('ubicacion') as string;
+                                                if (ubicacion.trim()) {
+                                                    window.location.href = `/paseadores?ubicacion=${encodeURIComponent(ubicacion)}`;
+                                                }
+                                            }}
+                                            className="flex flex-col sm:flex-row gap-2 mt-2"
+                                        >
+                                            <input
+                                                type="text"
+                                                name="ubicacion"
+                                                placeholder="Ej: Madrid, Barcelona, Valencia..."
+                                                className="flex-1 px-4 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                                required
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="px-6 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 font-medium flex items-center gap-2 shadow-lg"
+                                            >
+                                                <span>🔍</span>
+                                                <span>Buscar</span>
+                                            </button>
+                                        </form>
+                                    </>
                                 </div>
                             </div>
 
@@ -127,13 +160,13 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                     <div className="inline-block bg-white/70 backdrop-blur-sm rounded-lg px-4 py-2 mb-4">
                                         <h2 className="text-xl font-bold text-yellow-700">Guía de Paseos y Ejercicio</h2>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-4 border-2 border-gray-400/60 rounded-xl bg-gray-100">
                                         {articulosPaseadores.map((articulo) => (
                                             <div key={articulo.id} className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
                                                 <img 
                                                     src={articulo.imagen} 
                                                     alt={articulo.titulo}
-                                                    className="w-full h-40 object-cover"
+                                                    className={`w-full h-40 object-cover ${articulo.imagen.includes('ejercicios2') ? 'object-[center_20%]' : ''}`}
                                                 />
                                                 <div className="p-4">
                                                     <div className="flex flex-wrap gap-1 mb-2">
@@ -177,9 +210,9 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1553688738-a278b9f063e5?w=200"
+                                                        src="/images/correa extensible.png"
                                                         alt="Correa Extensible"
-                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                        className="w-full h-full object-cover object-[center_25%] group-hover:scale-110 transition-transform duration-300"
                                                     />
                                                     <div className="absolute top-1 right-1 bg-[#DAA520] text-white text-xs px-2 py-1 rounded">
                                                         AD
@@ -194,9 +227,9 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200"
+                                                        src="/images/arnes de adiestramiento2.jpg"
                                                         alt="Arnés Ergonómico"
-                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                        className="w-full h-full object-cover object-[center_10%] group-hover:scale-110 transition-transform duration-300"
                                                     />
                                                     <div className="absolute top-1 right-1 bg-[#DAA520] text-white text-xs px-2 py-1 rounded">
                                                         AD
@@ -211,7 +244,7 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1581888227599-779811939961?w=200"
+                                                        src="/images/bolsas biodegradables.jpg"
                                                         alt="Bolsas Biodegradables"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -228,7 +261,7 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?w=200"
+                                                        src="/images/botella portatil.webp"
                                                         alt="Botella de Agua Portátil"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -245,7 +278,7 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                             <a href="#" className="block">
                                                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-3">
                                                     <img 
-                                                        src="https://images.unsplash.com/photo-1605460375648-278bcbd579a6?w=200"
+                                                        src="/images/collar led.webp"
                                                         alt="Collar con Luces LED"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
@@ -266,7 +299,10 @@ const Paseadores: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
                                                 <h4 className="text-base font-bold mb-1">🚶‍♂️ ¿No Tienes Tiempo para Pasear?</h4>
                                                 <p className="text-sm">Encuentra paseadores profesionales cerca de ti</p>
                                             </div>
-                                            <button className="bg-white text-[#DAA520] px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-all duration-200 shadow-lg border border-[#DAA520]/20 text-sm">
+                                            <button 
+                                                onClick={scrollToBuscador}
+                                                className="bg-white text-[#DAA520] px-4 py-2 rounded-lg font-semibold hover:scale-105 transition-all duration-200 shadow-lg border border-[#DAA520]/20 text-sm"
+                                            >
                                                 Buscar Paseadores
                                             </button>
                                         </div>

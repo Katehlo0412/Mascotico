@@ -36,20 +36,20 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     };
 
     return (
-        <AuthLayout title="Reset password" description="Please enter your new password below">
-            <Head title="Reset password" />
+        <AuthLayout title="Restablecer contraseña" description="Introduce tu nueva contraseña para restablecer el acceso">
+            <Head title="Restablecer Contraseña" />
 
             <form onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">Correo electrónico</Label>
                         <Input
                             id="email"
                             type="email"
                             name="email"
                             autoComplete="email"
                             value={data.email}
-                            className="mt-1 block w-full"
+                            className="mt-1 block w-full bg-gray-50"
                             readOnly
                             onChange={(e) => setData('email', e.target.value)}
                         />
@@ -57,7 +57,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Nueva contraseña</Label>
                         <Input
                             id="password"
                             type="password"
@@ -67,13 +67,13 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             className="mt-1 block w-full"
                             autoFocus
                             onChange={(e) => setData('password', e.target.value)}
-                            placeholder="Password"
+                            placeholder="Tu nueva contraseña"
                         />
                         <InputError message={errors.password} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
+                        <Label htmlFor="password_confirmation">Confirmar nueva contraseña</Label>
                         <Input
                             id="password_confirmation"
                             type="password"
@@ -82,14 +82,14 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
                             value={data.password_confirmation}
                             className="mt-1 block w-full"
                             onChange={(e) => setData('password_confirmation', e.target.value)}
-                            placeholder="Confirm password"
+                            placeholder="Repite tu nueva contraseña"
                         />
                         <InputError message={errors.password_confirmation} className="mt-2" />
                     </div>
 
-                    <Button type="submit" className="mt-4 w-full" disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Reset password
+                    <Button type="submit" className="mt-4 w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border-0" disabled={processing}>
+                        {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />}
+                        {processing ? 'Restableciendo...' : 'Restablecer Contraseña'}
                     </Button>
                 </div>
             </form>

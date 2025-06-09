@@ -22,15 +22,15 @@ export default function ForgotPassword({ status }: { status?: string }) {
     };
 
     return (
-        <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
-            <Head title="Forgot password" />
+        <AuthLayout title="Recuperar contraseña" description="Introduce tu correo electrónico para recibir un enlace de recuperación">
+            <Head title="Recuperar Contraseña" />
 
-            {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
+            {status && <div className="mb-4 text-center text-sm font-medium text-green-600 bg-green-50 border border-green-200 rounded-lg p-3">{status}</div>}
 
             <div className="space-y-6">
                 <form onSubmit={submit}>
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
+                        <Label htmlFor="email">Correo electrónico</Label>
                         <Input
                             id="email"
                             type="email"
@@ -39,23 +39,23 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             value={data.email}
                             autoFocus
                             onChange={(e) => setData('email', e.target.value)}
-                            placeholder="email@example.com"
+                            placeholder="tu-email@ejemplo.com"
                         />
 
                         <InputError message={errors.email} />
                     </div>
 
                     <div className="my-6 flex items-center justify-start">
-                        <Button className="w-full" disabled={processing}>
-                            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                            Email password reset link
+                        <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border-0" disabled={processing}>
+                            {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />}
+                            {processing ? 'Enviando enlace...' : 'Enviar Enlace de Recuperación'}
                         </Button>
                     </div>
                 </form>
 
-                <div className="text-muted-foreground space-x-1 text-center text-sm">
-                    <span>Or, return to</span>
-                    <TextLink href={route('login')}>log in</TextLink>
+                <div className="text-gray-600 space-x-1 text-center text-sm">
+                    <span>O también puedes</span>
+                    <TextLink href={route('login')} className="text-yellow-600 hover:text-yellow-700 font-medium">volver a iniciar sesión</TextLink>
                 </div>
             </div>
         </AuthLayout>

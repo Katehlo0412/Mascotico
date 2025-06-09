@@ -34,7 +34,7 @@ const Rescate: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) =>
             <div className="min-h-screen bg-no-repeat bg-cover bg-fixed relative pb-8"
                 style={{ 
                     backgroundImage: "url('/images/Rescate4.webp')",
-                    backgroundPosition: 'center 0%'
+                    backgroundPosition: 'center -30%'
                 }}>
                 {/* Loader de fondo rescate */}
                 {!bgLoaded && (
@@ -80,9 +80,37 @@ const Rescate: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) =>
                                     </button>
                                 )}
                                 {!ubicacion && (
-                                    <p className="text-gray-700 text-left">
-                                        Utiliza el buscador superior para encontrar centros de rescate por ubicación.
-                                    </p>
+                                    <>
+                                        <p className="text-gray-700 text-left mb-4">
+                                            Busca centros de rescate animal cerca de tu ubicación:
+                                        </p>
+                                        {/* Buscador local */}
+                                        <form 
+                                            onSubmit={(e) => {
+                                                e.preventDefault();
+                                                const formData = new FormData(e.currentTarget);
+                                                const ubicacion = formData.get('ubicacion') as string;
+                                                if (ubicacion.trim()) {
+                                                    window.location.href = `/rescate?ubicacion=${encodeURIComponent(ubicacion)}`;
+                                                }
+                                            }}
+                                            className="flex gap-2 mt-2"
+                                        >
+                                            <input
+                                                type="text"
+                                                name="ubicacion"
+                                                placeholder="Ej: Murcia, Madrid, Barcelona..."
+                                                className="flex-1 px-4 py-2 border border-yellow-300 rounded-lg focus:outline-none focus:border-yellow-500 bg-white/90"
+                                                required
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium"
+                                            >
+                                                Buscar
+                                            </button>
+                                        </form>
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -178,12 +206,12 @@ const Rescate: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) =>
                                     <h3 className="text-xl font-bold text-gray-800 mb-2">🏠 Adopta, No Compres</h3>
                                     <p className="text-gray-700 mb-4">Miles de animales esperan una segunda oportunidad. La adopción salva vidas.</p>
                                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                                        <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                        <a href="/adopciones" className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center">
                                             Ver Animales en Adopción
-                                        </button>
-                                        <button className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors">
+                                        </a>
+                                        <a href="/comunidad" className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors text-center">
                                             Hazte Voluntario
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

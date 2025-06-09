@@ -117,9 +117,7 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
       <div className="min-h-screen flex flex-col">
         {/* Navbar */}
         <header
-          className={`sticky top-0 z-50 transition-all duration-300 ${
-            scrolled ? 'bg-white shadow-md' : 'bg-transparent'
-          }`}
+          className="sticky top-0 z-[100] bg-white shadow-lg transition-shadow duration-300"
         >
           <div className="flex items-center justify-between px-6 py-4">
             {/* Logo */}
@@ -145,7 +143,7 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
             </button>
 
             {/* Search bar */}
-            {showSearchBar && (
+            {showSearchBar && url === '/' && (
               <div className="flex-1 max-w-2xl mx-8">
                 <form onSubmit={handleSearch} action="javascript:void(0);">
                   <div className={`flex items-center border-2 rounded-full px-4 py-2 transition-all duration-300 ${

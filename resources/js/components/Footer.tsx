@@ -78,7 +78,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="text-center mt-3 pt-3 border-t border-gray-200">
           <p className="text-xs text-gray-500">
-            © 2025 Mascotico. <a href="/derechos-reservados" className="hover:text-[#DAA520] transition-colors">Todos los derechos reservados</a>.
+            © 2025 Mascotico. Todos los derechos reservados.
           </p>
           <p className="text-xs text-gray-500 mt-1">
             Mascotico® es una marca registrada. Desarrollado por Alumnos de DAW - MEDAC Murcia.
