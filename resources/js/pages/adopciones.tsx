@@ -164,11 +164,12 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
               <li>Das una segunda oportunidad a un animal necesitado</li>
               <li>Luchas contra el abandono y la crueldad animal</li>
               <li>Promueves la tenencia responsable de mascotas</li>
+              <li>Obtienes un compañero leal que te dará amor incondicional</li>
+              <li>Mejoras tu bienestar físico y mental con su compañía</li>
             </ul>
-            <BotonEstado estado="seleccionado">Saber más sobre adopción</BotonEstado>
           </div>
           <div className="md:w-1/2 flex items-center justify-center">
-            <img src="/images/adoption-hero.jpg" alt="Adopción de mascotas" className="rounded-lg shadow-lg max-w-md" />
+            <img src="/images/adopta.webp" alt="Adopción de mascotas" className="rounded-lg shadow-lg max-w-md" />
           </div>
         </section>
 
@@ -185,7 +186,7 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
               {animales.map(animal => (
                 <div
                   key={animal.id}
-                  className="flex flex-col items-center bg-white rounded-xl shadow-md p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-transparent hover:border-yellow-500 relative group w-72 mx-auto"
+                  className="flex flex-col items-center bg-white rounded-xl shadow-md p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-transparent hover:border-yellow-500 relative group w-[260px] mx-auto"
                 >
                   {/* Imagen */}
                   <div className="w-full flex justify-center mb-2">
@@ -394,46 +395,37 @@ const Adopciones: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
           </div>
         )}
 
-        {/* Servicios */}
-        <section className="p-6 bg-gray-50">
-          <h3 className="text-2xl font-bold text-yellow-700 mb-6">Cómo puedes ayudar</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { 
-                title: 'Adopta',
-                img: '/dog1.jpg',
-                description: 'Da un hogar a un animal que lo necesita y cambia su vida para siempre.'
-              },
-              { 
-                title: 'Dona',
-                img: '/donate.jpg',
-                description: 'Ayuda a mantener nuestros refugios y dar atención médica a los animales.'
-              },
-              { 
-                title: 'Apadrina',
-                img: '/cat1.jpg',
-                description: 'Si no puedes adoptar, apadrina un animal y ayuda con sus cuidados.'
-              }
-            ].map((s) => (
-              <div key={s.title} className="bg-white rounded-lg shadow-lg p-6">
-                <img src={s.img} alt={s.title} className="w-full h-48 object-cover rounded-lg mb-4" />
-                <h4 className="font-semibold text-lg mb-2">{s.title}</h4>
-                <p className="text-gray-600 mb-4">{s.description}</p>
-                <BotonEstado estado="seleccionado">Saber más</BotonEstado>
-              </div>
-            ))}
-          </div>
-        </section>
+
 
         {/* Casos de éxito */}
         <section className="p-6">
           <h3 className="text-2xl font-bold text-yellow-700 mb-6">Historias de éxito</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            {['/success1.jpg', '/success2.jpg', '/success3.jpg'].map((src, idx) => (
+            {[
+              {
+                src: '/images/guardian.png',
+                title: 'Rocky encuentra su familia',
+                description: 'Después de 8 meses en el refugio, Rocky encontró a la familia perfecta con niños pequeños. Ahora es el guardián más feliz y juguetón de su nuevo hogar.'
+              },
+              {
+                src: '/images/perrita.jpg', 
+                title: 'Mila, de la calle al sofá',
+                description: 'Mila fue rescatada de las calles cuando era solo un cachorro. Hoy, 2 años después, es la princesa de la casa y le encanta dormir en el sofá con su familia adoptiva.'
+              },
+              {
+                src: '/images/perro mayor.jpeg',
+                title: 'Bruno y su segunda oportunidad',
+                description: 'Bruno era un perro mayor que nadie quería adoptar. Pero María se enamoró de él y ahora viven felices juntos. La edad no importa cuando hay amor de por medio.'
+              }
+            ].map((story, idx) => (
               <div key={idx} className="bg-white rounded-lg shadow-lg p-6">
-                <img src={src} alt={`Historia de éxito ${idx + 1}`} className="w-full h-48 object-cover rounded-lg mb-4" />
-                <h4 className="font-semibold text-lg mb-2">Una nueva vida</h4>
-                <p className="text-gray-600">Historia de cómo esta mascota encontró su hogar para siempre.</p>
+                <img 
+                  src={story.src} 
+                  alt={story.title} 
+                  className={`w-full h-48 object-cover rounded-lg mb-4 ${idx === 2 ? 'object-[center_75%]' : 'object-center'}`}
+                />
+                <h4 className="font-semibold text-lg mb-2">{story.title}</h4>
+                <p className="text-gray-600">{story.description}</p>
               </div>
             ))}
           </div>

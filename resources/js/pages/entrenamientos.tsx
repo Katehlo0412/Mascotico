@@ -64,8 +64,7 @@ const Entrenamientos: React.FC<Props> = ({ resultados = [], error, ubicacion = '
                 style={{ 
                     backgroundImage: "url('/images/entrenamiento3.webp')",
                     backgroundSize: 'cover',
-                    backgroundPosition: '70% top',
-                    backgroundAttachment: 'fixed',
+                    backgroundPosition: '20% top',
                 }}
             >
                 {ubicacion && resultados.length > 0 ? (

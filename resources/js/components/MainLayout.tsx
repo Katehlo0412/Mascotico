@@ -184,7 +184,7 @@ export default function MainLayout({ children, showSearchBar = true }: MainLayou
             )}
 
 {/* User actions */}
-<UserActions scrolled={scrolled} />
+<UserActions scrolled={scrolled} user={user} />
 </div>
 </header>
 

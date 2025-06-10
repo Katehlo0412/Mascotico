@@ -25,6 +25,12 @@ function ProductosList({ productosPorTipo }: { productosPorTipo: Record<string, 
   const [showPopup, setShowPopup] = useState(false);
   const [popupProducto, setPopupProducto] = useState<Producto | null>(null);
 
+  // Función para mapear tipos de productos
+  const formatTipoProducto = (tipo: string) => {
+    if (tipo === 'Pienso') return 'Piensos';
+    return tipo;
+  };
+
   const handleAdd = (producto: Producto) => {
     addToCart(producto);
     setPopupProducto(producto);
@@ -65,7 +71,7 @@ function ProductosList({ productosPorTipo }: { productosPorTipo: Record<string, 
           <div className="flex justify-center mb-8">
             <div className="relative">
               <h2 className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-3xl font-bold px-12 py-4 rounded-3xl shadow-2xl text-center border-4 border-white/50">
-                {tipo}
+                {formatTipoProducto(tipo)}
               </h2>
               <div className="absolute -top-2 -right-2 text-2xl animate-bounce">
                 {tipo.includes('Comida') ? '🍖' : 

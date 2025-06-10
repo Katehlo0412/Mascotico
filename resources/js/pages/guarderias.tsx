@@ -62,9 +62,9 @@ const Guarderias: React.FC<Props> = ({ resultados = [], error, ubicacion = '' })
             <div
                 className="relative w-full bg-no-repeat bg-cover bg-center pb-8"
                 style={{ 
-                    backgroundImage: "url('/images/guarderias.webp')",
+                    backgroundImage: "url('/images/guarderiasmejor.webp')",
                     backgroundSize: '130% 100%',
-                    backgroundPosition: '10% top',
+                    backgroundPosition: '25% top',
                     minHeight: '100vh',
                     height: '100%'
                 }}

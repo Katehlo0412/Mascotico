@@ -3,7 +3,13 @@ import { ShoppingBag, User, Minus, Plus, Trash } from 'lucide-react'; // Añade 
 import { Link } from '@inertiajs/react';
 import { useCart } from '../context/CartContext';
 
-export default function UserActions({ scrolled }: { scrolled: boolean }) {
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export default function UserActions({ scrolled, user }: { scrolled: boolean; user?: User | null }) {
   const { cart, removeFromCart, clearCart, updateQuantity } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
   const [discountCode, setDiscountCode] = useState('');
@@ -164,10 +170,17 @@ export default function UserActions({ scrolled }: { scrolled: boolean }) {
           </div>
         </div>
       </div>
-      <Link href="/mi-cuenta" className={`flex flex-col items-center text-[#DAA520] hover:scale-110 transition`}>
-        <User className="w-5 h-5 mb-1" />
-        <span className="text-xs">Mi cuenta</span>
-      </Link>
+      {user ? (
+        <Link href="/mi-cuenta" className={`flex flex-col items-center text-[#DAA520] hover:scale-110 transition`}>
+          <User className="w-5 h-5 mb-1" />
+          <span className="text-xs">Mi Cuenta</span>
+        </Link>
+      ) : (
+        <Link href="/mi-cuenta" className={`flex flex-col items-center text-[#DAA520] hover:scale-110 transition`}>
+          <User className="w-5 h-5 mb-1" />
+          <span className="text-xs">Inicia Sesión</span>
+        </Link>
+      )}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 animate-fade-in">
           <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md border border-yellow-300 animate-fade-in">
