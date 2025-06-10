@@ -25,7 +25,7 @@ function ProductosList({ productosPorTipo }: { productosPorTipo: Record<string, 
   const [showPopup, setShowPopup] = useState(false);
   const [popupProducto, setPopupProducto] = useState<Producto | null>(null);
 
-  // Función para mapear tipos de productos
+  
   const formatTipoProducto = (tipo: string) => {
     if (tipo === 'Pienso') return 'Piensos';
     return tipo;
@@ -136,10 +136,10 @@ export default function TiendaPage() {
   
   const handleToggleAd = () => {
     setShowAd(!showAd);
-    // Si se va a mostrar el anuncio, hacer scroll después de un pequeño delay para que se renderice
+    
     if (!showAd) {
       setTimeout(() => {
-        // Buscar el contenedor del descuento y hacer scroll para mostrarlo completamente
+        
         const adContainer = document.querySelector('.absolute.top-full');
         if (adContainer) {
           adContainer.scrollIntoView({ 
@@ -160,17 +160,17 @@ export default function TiendaPage() {
       });
   }, []);
 
-  // Esto recarga el anuncio cuando el componente se monta
+  
   useEffect(() => {
     if (window.adsbygoogle && Array.isArray(window.adsbygoogle)) {
       try {
-        // @ts-ignore
+        
         window.adsbygoogle.push({});
       } catch (e) {}
     }
   }, []);
 
-  // Agrupa productos por tipo
+  
   const productosPorTipo = productos.reduce((acc, producto) => {
     acc[producto.tipo] = acc[producto.tipo] || [];
     acc[producto.tipo].push(producto);

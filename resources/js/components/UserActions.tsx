@@ -18,6 +18,7 @@ export default function UserActions({ scrolled, user }: { scrolled: boolean; use
   const [showModal, setShowModal] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const total = cart.reduce((sum, item) => sum + item.cantidad, 0);
   const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
@@ -37,6 +38,13 @@ export default function UserActions({ scrolled, user }: { scrolled: boolean; use
     } else {
       setDiscountApplied(false);
       setDiscountError('Código no válido');
+    }
+  };
+
+  const handleCheckout = () => {
+    if (!user) {
+      setShowLoginModal(true);
+      return;
     }
   };
 
@@ -158,11 +166,14 @@ export default function UserActions({ scrolled, user }: { scrolled: boolean; use
                 </div>
                 <button
                   className="mt-2 bg-[#DAA520] hover:bg-yellow-600 text-white px-3 py-2 rounded text-base w-full font-bold shadow transition-all duration-200 animate-fade-in flex items-center justify-center gap-2"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => {
+                    if (!user) {
+                      setShowLoginModal(true);
+                    } else {
+                      setShowModal(true);
+                    }
+                  }}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M2 7h20M2 11h20M2 15h20M6 19h12" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
                   Pagar
                 </button>
               </>
@@ -372,6 +383,26 @@ export default function UserActions({ scrolled, user }: { scrolled: boolean; use
                 </button>
               </form>
             )}
+          </div>
+        </div>
+      )}
+      {showLoginModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+          <div className="bg-white rounded-xl p-8 shadow-xl text-center max-w-xs">
+            <h2 className="text-xl font-bold mb-4">Inicia sesión</h2>
+            <p className="mb-4">Debes iniciar sesión para completar tu compra.</p>
+            <button
+              className="bg-yellow-500 hover:bg-yellow-600 transition-colors text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:scale-105 active:scale-95"
+              onClick={() => window.location.href = '/login'}
+            >
+              Ir a iniciar sesión
+            </button>
+            <button
+              className="ml-4 text-gray-500 underline"
+              onClick={() => setShowLoginModal(false)}
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       )}
