@@ -33,7 +33,7 @@ const Rescate: React.FC<Props> = ({ resultados = [], error, ubicacion = '' }) =>
         <MainLayout>
             <div className="min-h-screen bg-no-repeat bg-cover bg-fixed relative pb-8"
                 style={{ 
-                    backgroundImage: "url('/images/Rescate4.webp')",
+                    backgroundImage: "url('/images/rescate44.webp')",
                     backgroundPosition: 'center -30%'
                 }}>
                 {/* Loader de fondo rescate */}
