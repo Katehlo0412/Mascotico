@@ -47,10 +47,19 @@ export default function ComunidadPage() {
   const [publicacionEnviada, setPublicacionEnviada] = useState(false);
   const [contenidoPublicacion, setContenidoPublicacion] = useState('');
 
-  const handleSubmitContacto = (e: React.FormEvent) => {
+  const handleSubmitContacto = async (e: React.FormEvent) => {
     e.preventDefault();
     setMensajeEnviado(true);
-    // Resetear formulario después de 3 segundos
+
+    await fetch('/contacto', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || ''
+      },
+      body: JSON.stringify(formData),
+    });
+
     setTimeout(() => {
       setMensajeEnviado(false);
       setFormData({ nombre: '', email: '', asunto: '', mensaje: '' });
@@ -445,4 +454,4 @@ export default function ComunidadPage() {
       </div>
     </MainLayout>
   );
-} 
+}

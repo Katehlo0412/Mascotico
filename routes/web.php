@@ -14,6 +14,7 @@ use App\Http\Controllers\AdopcionController;
 
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ContactoController;
 
 
 Route::get('/', function () {
@@ -94,6 +95,7 @@ Route::get('/animal/crud', function () {
 Route::get('/productos/{producto}/reviews', [ReviewController::class, 'index']);
 Route::post('/productos/{producto}/reviews', [ReviewController::class, 'store']);
 Route::post('/solicitud-adopcion', [\App\Http\Controllers\SolicitudAdopcionController::class, 'enviar'])->name('solicitud.adopcion');
+Route::post('/contacto', [ContactoController::class, 'store']);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
