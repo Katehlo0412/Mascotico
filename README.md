@@ -84,7 +84,13 @@ Accede a la app en: [http://localhost:8000](http://localhost:8000)
 - **Comunidad:** Espacio para compartir experiencias, consejos y publicaciones.
 - **Consejos:** Recomendaciones y tips para el cuidado de mascotas.
 - **Mi cuenta:** Gestión de perfil, datos personales y pedidos (requiere login).
-- **Panel de administración:** CRUD de productos y animales (usuarios autorizados).
+- **Panel de administración:** CRUD de productos y animales.
+
+## 🌍 Acceso a la página web
+
+Puedes acceder a la versión online de Mascotico aquí:
+
+[https://mascotico-app-48d5228309f9.herokuapp.com/](https://mascotico-app-48d5228309f9.herokuapp.com/)
 
 ## 💡 Notas
 
